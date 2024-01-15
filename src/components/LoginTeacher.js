@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import logo from './assets/logo.png';
+import '../styles.css'; // Import the CSS file
 
 function isValidEmail(email) {
   // Define a regular expression pattern for email validation.
@@ -45,35 +47,41 @@ const LoginTeacher = () => {
   const navigateToForgotPass = () => {
     navigate('/forgot-password');
   }
-
+  
   return (
-    <div className="login-container">
-      <h1>Login as Teacher</h1>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="email"
-          name="email" // Added name attribute to the input
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="Email"
-          required
-          title="Please enter a valid email address"
-        />
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          placeholder="Password"
-          required
-        />
-        <div className="remember-me">
-          <input type="checkbox" id="rememberMe" />
-          <label htmlFor="rememberMe">Remember Me</label>
-        </div>
-        <button type="submit" className="login-button">Login</button>
-        <button type="button" className="forgot-password-button" onClick={navigateToForgotPass}>Forgot Password?</button>
-        <button type="button" className="register-button" onClick={navigateToRegister}>Register An Account</button>
-      </form>
+    <div>
+      <div className="header">
+        <img src={logo} alt="logo" className="LogoIcon" />
+        <h1>SmartLearnAI</h1>
+      </div>
+      <div className="login-container">
+        <h1>Login as Teacher</h1>
+        <form onSubmit={handleSubmit}>
+          <input
+            type="email"
+            name="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="Email"
+            required
+            title="Please enter a valid email address"
+          />
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="Password"
+            required
+          />
+          <div className="remember-me">
+            <input type="checkbox" id="rememberMe" />
+            <label htmlFor="rememberMe">Remember Me</label>
+          </div>
+          <button type="submit" className="login-button">Login</button>
+          <button type="button" className="forgot-password-button" onClick={navigateToForgotPass}>Forgot Password?</button>
+          <button type="button" className="register-button" onClick={navigateToRegister}>Register An Account</button>
+        </form>
+      </div>
     </div>
   );
 };
