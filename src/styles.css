@@ -15,14 +15,14 @@ body, html {
   
   .login-container {
     width: 400px;
-    background-color: #ffffff;
+    margin: 20px auto 0; /* Center the login container horizontally and add 20px space above */
+    background-color: rgba(177, 227, 255, 0.5);
     padding: 20px;
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  }
+  }  
   
   h1 {
-    color: #333333;
     text-align: center;
   }
   
@@ -41,21 +41,22 @@ body, html {
   
   /* Buttons */
   button {
-    padding: 10px;
-    margin-bottom: 10px;
+    padding: 5px;
+    margin-bottom: 5px;
     border: none;
-    border-radius: 5px;
+    border-radius: 1px;
     cursor: pointer;
   }
   
   .login-button {
-    background-color: #007bff;
+    background-color: #003C71;
     color: white;
   }
   
   .register-button, .forgot-password-button {
     background-color: transparent;
-    color: #007bff;
+    color: #003C71;
+    margin: 1px;
   }
   
   .remember-me {
@@ -86,4 +87,41 @@ body, html {
       border-radius: 0;
     }
   }
+  
+  /*LoginRegister.js*/
+  .login-register-container {
+    text-align: center;
+  }
+  
+  .header {
+    background-color: #003C71;
+    padding: 0.5px;
+    font-size: 22px;
+    opacity: 0.75;
+    color: white;
+    font-family: Arial, sans-serif;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center; 
+  }
+  
+  .login-buttons {
+    margin-top: 20px;
+  }
+  
+  button {
+    display: block;
+    padding: 15px; 
+    margin: 10px auto; 
+    cursor: pointer;
+    background-color: #003C71; 
+    color: white;
+    border: none;
+    border-radius: 8px; 
+    font-size: 18px; 
+    font-family: Arial, sans-serif;
+  }
+  
+  
   
