@@ -8,26 +8,96 @@ const RegisterStudent = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [firstNameError, setFirstNameError] = useState('');
+  const [lastNameError, setLastNameError] = useState('');
+  const [universityError, setUniversityError] = useState('');
+  const [emailError, setEmailError] = useState('');
+  const [passwordError, setPasswordError] = useState('');
+  const [confirmPasswordError, setConfirmPasswordError] = useState('');
   const navigate = useNavigate(); // Hook for navigation
+  
+  const universitiesInCanada = [
+    'Ontario Tech University',
+    'Toronto Metropolitan University',
+    'Macmaster University',
+    'University of Waterloo',
+    // Add more universities as needed
+  ];
+
+  function validateForm() {
+    let isValid = true;
+
+    if (!firstName) {
+      setFirstNameError('Please enter your first name');
+      isValid = false;
+    } else {
+      setFirstNameError('');
+    }
+    
+    if (!lastName) {
+      setLastNameError('Please enter your last name');
+      isValid = false;
+    } else {
+      setLastNameError('');
+    }
+
+    if (!university) {
+      setUniversityError('Please select your university');
+      isValid = false;
+    } else {
+      setUniversityError('');
+    }
+
+    if (!email) {
+      setEmailError('Please enter your email');
+      isValid = false;
+    } else if (!isValidEmail(email)) {
+      setEmailError('Please enter a valid email address');
+      isValid = false;
+    } else {
+      setEmailError('');
+    }
+
+    if (!password) {
+      setPasswordError('Please enter a password');
+      isValid = false;
+    } else if (password.length < 6) {
+      setPasswordError('Password must be at least 6 characters long');
+      isValid = false;
+    } else {
+      setPasswordError('');
+    }
+
+    if (password !== confirmPassword) {
+      setConfirmPasswordError('Passwords do not match!');
+      isValid = false;
+    } else {
+      setConfirmPasswordError('');
+    }
+
+    return isValid;
+  }
+
+  function isValidEmail(email) {
+    // Add your email validation logic here
+    // For a simple check, you can use a regular expression
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  }
 
   function handleSubmit(event) {
     event.preventDefault();
-    // Implement your registration logic here.
-    // For example, send the user details to your backend, handle the response, etc.
-    // This is just a placeholder for demonstration.
-    const isRegistrationSuccessful = true; // Replace with actual registration check
 
-    if (isRegistrationSuccessful) {
-      navigate('/registration-confirmation'); // Redirect to confirmation page
+    if (validateForm()==true) {
+      // Registration logic here if all fields are valid
+      //const isRegistrationSuccessful = true; // Replace with actual registration check
+      navigate('/register-confirmation'); // Redirect to confirmation page
+
     } else {
-      // Handle registration failure (e.g., show an error message)
-      alert('Error 2: Registration failed');
+      // Show an alert or handle errors
+      alert('Please fill out all fields correctly');
     }
-  };
-
-  const navigateToConfirmation = () => {
-    navigate('/registeration-confirmation'); // Navigate to the RegisterStudent component
-  };
+  }
 
   return (
     <div className="register-container">
@@ -40,6 +110,7 @@ const RegisterStudent = () => {
           placeholder="First Name"
           required
         />
+        <span className="error-message">{firstNameError}</span>
         <input
           type="text"
           value={lastName}
@@ -47,13 +118,20 @@ const RegisterStudent = () => {
           placeholder="Last Name"
           required
         />
-        <input
-          type="text"
+        <span className="error-message">{lastNameError}</span>
+        <select
           value={university}
           onChange={(e) => setUniversity(e.target.value)}
-          placeholder="University"
           required
-        />
+        >
+          <option value="">Select University</option>
+          {universitiesInCanada.map((universityName, index) => (
+            <option key={index} value={universityName}>
+              {universityName}
+            </option>
+          ))}
+        </select>
+        <span className="error-message">{universityError}</span>
         <input
           type="email"
           value={email}
@@ -61,6 +139,7 @@ const RegisterStudent = () => {
           placeholder="Your University Email"
           required
         />
+        <span className="error-message">{emailError}</span>
         <input
           type="password"
           value={password}
@@ -68,6 +147,7 @@ const RegisterStudent = () => {
           placeholder="Password"
           required
         />
+        <span className="error-message">{passwordError}</span>
         <input
           type="password"
           value={confirmPassword}
@@ -75,7 +155,10 @@ const RegisterStudent = () => {
           placeholder="Confirm Password"
           required
         />
-        <button type="submit" className="register-button" onClick={navigateToConfirmation}>Register</button>
+        <span className="error-message">{confirmPasswordError}</span>
+        <button type="submit" className="register-button">
+          Register An Account
+        </button>
       </form>
     </div>
   );

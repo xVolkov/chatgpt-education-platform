@@ -5,8 +5,8 @@ import LoginTeacher from './components/LoginTeacher';
 import LoginStudent from './components/LoginStudent';
 import RegisterTeacher from './components/RegisterTeacher';
 import RegisterStudent from './components/RegisterStudent';
-import RegistrationConfirmation from './components/RegistrationConfirmation';
-import Register from './components/Register';
+import RegistrationConfirmation from './components/RegisterConfirmation';
+import ForgotPassword from './components/ForgotPassword';
 import Home from './components/Home';
 import './styles.css';
 
@@ -19,8 +19,8 @@ const App = () => {
         <Route path="/login-student" element={<LoginStudent />} />
         <Route path="/register-teacher" element={<RegisterTeacher/>} />
         <Route path="/register-student" element={<RegisterStudent/>} />
-        <Route path="/registeration-confirmation" element={<RegistrationConfirmation/>} />
-        <Route path="/register" element={<Register />} />
+        <Route path="/register-confirmation" element={<RegistrationConfirmation/>} />
+        <Route path="/forgot-password" element={<ForgotPassword/>} />
         <Route path="/home" element={<Home />} />
         {/* Other routes can be added here */}
       </Routes>

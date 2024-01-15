@@ -40,6 +40,11 @@ const navigateToRegister = () => {
     navigate('/register-student'); // Navigate to the RegisterTeacher component
   };
 
+// Function to handle navigation to forgot password page
+const navigateToForgotPass = () => {
+  navigate('/forgot-password');
+}
+
   return (
     <div className="login-container">
       <form onSubmit={handleSubmit}>
@@ -65,7 +70,7 @@ const navigateToRegister = () => {
           <label htmlFor="rememberMe">Remember Me</label>
         </div>
         <button type="submit" className="login-button">Login</button>
-        <button type="button" className="forgot-password-button">Forgot Password?</button>
+        <button type="button" className="forgot-password-button" onClick={navigateToForgotPass}>Forgot Password?</button>
         <button type="button" className="register-button" onClick={navigateToRegister}>Register</button>
       </form>
     </div>

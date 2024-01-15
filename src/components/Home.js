@@ -1,5 +1,5 @@
 import React from 'react';
-import './App.css';
+import '../styles.css';
 import settings from './assets/settings.png';
 import profile from './assets/profile.png';
 import logo from './assets/logo.png';
