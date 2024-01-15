@@ -14,6 +14,7 @@ const RegisterTeacher = () => {
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
   const [confirmPasswordError, setConfirmPasswordError] = useState('');
+  const [serverResponse, setServerResponse] = useState(''); // Displays python flask server response
   const navigate = useNavigate(); // Hook for navigation
 
   const universitiesInCanada = [
@@ -26,27 +27,20 @@ const RegisterTeacher = () => {
 
   function validateForm() {
     let isValid = true;
-
     if (!firstName) {
       setFirstNameError('Please enter your first name');
       isValid = false;
-    } else {
-      setFirstNameError('');
-    }
+    } else {setFirstNameError('');}
 
     if (!lastName) {
       setLastNameError('Please enter your last name');
       isValid = false;
-    } else {
-      setLastNameError('');
-    }
+    } else {setLastNameError('');}
 
     if (!university) {
       setUniversityError('Please select your university');
       isValid = false;
-    } else {
-      setUniversityError('');
-    }
+    } else {setUniversityError('');}
 
     if (!email) {
       setEmailError('Please enter your email');
@@ -54,9 +48,7 @@ const RegisterTeacher = () => {
     } else if (!isValidEmail(email)) {
       setEmailError('Please enter a valid email address');
       isValid = false;
-    } else {
-      setEmailError('');
-    }
+    } else {setEmailError('');}
 
     if (!password) {
       setPasswordError('Please enter a password');
@@ -64,16 +56,12 @@ const RegisterTeacher = () => {
     } else if (password.length < 6) {
       setPasswordError('Password must be at least 6 characters long');
       isValid = false;
-    } else {
-      setPasswordError('');
-    }
+    } else {setPasswordError('');}
 
     if (password !== confirmPassword) {
       setConfirmPasswordError('Passwords do not match!');
       isValid = false;
-    } else {
-      setConfirmPasswordError('');
-    }
+    } else {setConfirmPasswordError('');}
 
     return isValid;
   }
@@ -85,23 +73,62 @@ const RegisterTeacher = () => {
     return emailRegex.test(email);
   }
 
-  function handleSubmit(event) {
+  const handleSubmit = async(event) => {
     event.preventDefault();
+    const userType = "Teacher" // Set user type as teacher for the about to be registered user
 
-    if (validateForm()==true) {
-      // Registration logic here if all fields are valid
-      //const isRegistrationSuccessful = true; // Replace with actual registration check
-      navigate('/register-confirmation'); // Redirect to confirmation page
+    if (validateForm()) {
+        const userData = {
+            firstName,
+            lastName,
+            university,
+            email,
+            password,
+            userType,
+          };
+          //alert(JSON.stringify(userData)); // <<<DEBUG>>> Displays user data before sending them to flask server
 
+        try{ // Contacting the flask server and sending the user data
+            const response = await fetch('http://localhost:5000/register', {
+            method: 'POST',
+            headers: {
+            'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(userData)
+        });
+
+        if (response.ok) {
+            // Handle successful registration
+            const jsonResponse = await response.json();
+            console.log(jsonResponse.message);
+            setServerResponse(jsonResponse.message);
+            navigate('/register-confirmation'); // Redirect user to RegisterConfirmation page
+          } else {
+            // Handle HTTP errors
+            const jsonResponse = await response.json();
+            console.log(jsonResponse.message);
+            setServerResponse(jsonResponse.message);
+            //alert('Registration failed. Please try again.');
+            console.error('Failed to register.');
+            }
+        } catch (error) {
+            // Handle network errors
+            setServerResponse('An error occurred during registration.');
+            //alert('An error occurred during registration.');
+            console.error('Network error:', error);
+        }
     } else {
-      // Show an alert or handle errors
-      alert('Please fill out all fields correctly');
+        setServerResponse('Please fill out all fields correctly');
+        //alert('Please fill out all fields correctly');
+    };
     }
-  }
 
   return (
     <div className="register-container">
       <h1>Register as Teacher</h1>
+      <div className="server-response">
+        {serverResponse && <p>{serverResponse}</p>}
+      </div>
       <form onSubmit={handleSubmit}>
         <input
           type="text"
