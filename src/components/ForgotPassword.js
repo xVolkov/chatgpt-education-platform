@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import logo from './assets/logo.png';
+import '../styles.css'; // Import the CSS file
 
 const ForgotPassword = () => {
   const navigate = useNavigate();
@@ -45,22 +47,28 @@ const ForgotPassword = () => {
   }
 
   return (
-    <div className="password-recovery">
-      <h1>Password Recovery</h1>
-      <p>
-        Please fillout your email address and you will receive a password recovery email with instructions.
-      </p>
-      <input
-          type="email"
-          name="email" // Added name attribute to the input
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="Email"
-          required
-          title="Please enter a valid email address"
-        />
-        <span className="error-message">{emailError}</span>
-      <button onClick={handleContinue}>Submit</button>
+    <div>
+      <div className="header">
+        <img src={logo} alt="logo" className="LogoIcon" />
+        <h1>SmartLearnAI</h1>
+      </div>
+      <div className="password-recovery">
+        <h1>Password Recovery</h1>
+        <p>
+          Please fillout your email address and you will receive a password recovery email with instructions.
+        </p>
+        <input
+            type="email"
+            name="email" // Added name attribute to the input
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="Email"
+            required
+            title="Please enter a valid email address"
+          />
+          <span className="error-message">{emailError}</span>
+        <button onClick={handleContinue}>Submit</button>
+      </div>
     </div>
   );
 };

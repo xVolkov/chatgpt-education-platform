@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import logo from './assets/logo.png';
+import '../styles.css'; // Import the CSS file
 
 const RegisterStudent = () => {
   const [firstName, setFirstName] = useState('');
@@ -124,69 +126,76 @@ const RegisterStudent = () => {
     }
 
   return ( 
-    <div className="register-container">
-      <h1>Register as Student</h1>
-      <div className="server-response">
-        {serverResponse && <p>{serverResponse}</p>}
+    
+    <div>
+      <div className="header">
+        <img src={logo} alt="logo" className="LogoIcon" />
+        <h1>SmartLearnAI</h1>
       </div>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          value={firstName}
-          onChange={(e) => setFirstName(e.target.value)}
-          placeholder="First Name"
-          required
-        />
-        <span className="error-message">{firstNameError}</span>
-        <input
-          type="text"
-          value={lastName}
-          onChange={(e) => setLastName(e.target.value)}
-          placeholder="Last Name"
-          required
-        />
-        <span className="error-message">{lastNameError}</span>
-        <select
-          value={university}
-          onChange={(e) => setUniversity(e.target.value)}
-          required
-        >
-          <option value="">Select University</option>
-          {universitiesInCanada.map((universityName, index) => (
-            <option key={index} value={universityName}>
-              {universityName}
-            </option>
-          ))}
-        </select>
-        <span className="error-message">{universityError}</span>
-        <input
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="Your University Email"
-          required
-        />
-        <span className="error-message">{emailError}</span>
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          placeholder="Password"
-          required
-        />
-        <span className="error-message">{passwordError}</span>
-        <input
-          type="password"
-          value={confirmPassword}
-          onChange={(e) => setConfirmPassword(e.target.value)}
-          placeholder="Confirm Password"
-          required
-        />
-        <span className="error-message">{confirmPasswordError}</span>
-        <button type="submit" className="register-button">
-          Register An Account
-        </button>
-      </form>
+      <div className="register-container">
+        <h1>Register as Student</h1>
+        <div className="server-response">
+          {serverResponse && <p>{serverResponse}</p>}
+        </div>
+        <form onSubmit={handleSubmit}>
+          <input
+            type="text"
+            value={firstName}
+            onChange={(e) => setFirstName(e.target.value)}
+            placeholder="First Name"
+            required
+          />
+          <span className="error-message">{firstNameError}</span>
+          <input
+            type="text"
+            value={lastName}
+            onChange={(e) => setLastName(e.target.value)}
+            placeholder="Last Name"
+            required
+          />
+          <span className="error-message">{lastNameError}</span>
+          <select
+            value={university}
+            onChange={(e) => setUniversity(e.target.value)}
+            required
+          >
+            <option value="">Select University</option>
+            {universitiesInCanada.map((universityName, index) => (
+              <option key={index} value={universityName}>
+                {universityName}
+              </option>
+            ))}
+          </select>
+          <span className="error-message">{universityError}</span>
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="Your University Email"
+            required
+          />
+          <span className="error-message">{emailError}</span>
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="Password"
+            required
+          />
+          <span className="error-message">{passwordError}</span>
+          <input
+            type="password"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            placeholder="Confirm Password"
+            required
+          />
+          <span className="error-message">{confirmPasswordError}</span>
+          <button type="submit" className="register-button">
+            Register An Account
+          </button>
+        </form>
+      </div>
     </div>
   );
 };

@@ -110,6 +110,9 @@ const LoginTeacher = () => {
           <button type="button" className="register-button" onClick={navigateToRegister}>Register An Account</button>
         </form>
       </div>
+      <div className="server-response">
+        {serverResponse && <p>{serverResponse}</p>}
+      </div>
     </div>
   );
 };

@@ -110,6 +110,9 @@ const navigateToForgotPass = () => {
           <button type="button" className="register-button" onClick={navigateToRegister}>Register</button>
         </form>
       </div>
+      <div className="server-response">
+        {serverResponse && <p>{serverResponse}</p>}
+      </div>
     </div>
   );
 };
