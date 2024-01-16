@@ -21,17 +21,27 @@ else:
 def hash_password(password):
     return hashlib.sha256(password.encode()).hexdigest()
 
-# Function to check credentials
-def check_credentials(email, password):
-    with open("users.txt", "r") as file:
-        users = json.loads(file.read())
+# Function to check credentials for teacher logins
+def check_credentials_teacher(email, password):
+    with open(users_filename, "r") as file:
+        users = json.load(file)
         hashed_password = hash_password(password)
         for user in users:
-            if user["email"] == email and user["password"] == hashed_password:
+            if user["email"] == email and user["password"] == hashed_password and user["userType"] == "Teacher":
                 return True
     return False
 
-# General function to handle both Teacher and Student user registrations
+# Function to check credentials for student logins
+def check_credentials_student(email, password):
+    with open(users_filename, "r") as file:
+        users = json.load(file)
+        hashed_password = hash_password(password)
+        for user in users:
+            if user["email"] == email and user["password"] == hashed_password and user["userType"] == "Student":
+                return True
+    return False
+
+# Account registration function to handle both Teacher and Student user registrations
 @app.route('/register', methods=['POST'])
 def register_user():
     # Extract JSON data from the request
@@ -64,9 +74,7 @@ def register_user():
         'userType': userType,
         'userID': userID,
     }
-    
-    print(new_user) # <<<DEBUG>>> prints the new user data about to be saved to users.json
-    
+    # print(new_user) # <<<DEBUG>>> prints the new user data about to be saved to users.json
     try:
         users.append(new_user)
          # Write the updated users list back to the file
@@ -76,23 +84,29 @@ def register_user():
     except:
         print(f"could not append user data to .json file")
 
-# Login teacher endpoint
+# Account login function to handle both Teacher and Student logins
 @app.route('/login-teacher', methods=['POST'])
 def login_teacher():
     data = request.json
-    if check_credentials(data['email'], data['password']):
-        return jsonify({'success': True})
+    if check_credentials_teacher(data['email'], data['password']):
+        if data['userType'] == "Teacher":
+            print(data)
+            return jsonify({'success': True})
     else:
-        return jsonify({'success': False}), 401
-
-# Login student endpoint
+        return jsonify({"message": "Incorrect email/password!"}), 400
+        #return jsonify({'success': False}), 401
+    
+# Account login function to handle both Teacher and Student logins
 @app.route('/login-student', methods=['POST'])
 def login_student():
     data = request.json
-    if check_credentials(data['email'], data['password']):
-        return jsonify({'success': True})
+    if check_credentials_student(data['email'], data['password']):
+        if data['userType'] == "Student":
+            print(data)
+            return jsonify({'success': True})
     else:
-        return jsonify({'success': False}), 401
+        return jsonify({"message": "Incorrect email/password!"}), 400
+        #return jsonify({'success': False}), 401
 
 if __name__ == '__main__':
     app.run(debug=True)

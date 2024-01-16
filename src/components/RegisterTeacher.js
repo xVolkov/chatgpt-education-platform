@@ -121,7 +121,7 @@ const RegisterTeacher = () => {
         setServerResponse('Please fill out all fields correctly');
         //alert('Please fill out all fields correctly');
     };
-    }
+  }
 
   return (
     <div className="register-container">
