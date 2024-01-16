@@ -79,6 +79,9 @@ const LoginTeacher = () => {
         <img src={logo} alt="logo" className="LogoIcon" />
         <h1>SmartLearnAI</h1>
       </div>
+        <div className="server-response">
+        {serverResponse && <p>{serverResponse}</p>}
+        </div>
       <div className="login-container">
         <h1>Login as Teacher</h1>
         <form onSubmit={handleSubmit}>

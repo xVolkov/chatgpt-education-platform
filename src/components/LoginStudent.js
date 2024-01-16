@@ -79,6 +79,9 @@ const navigateToForgotPass = () => {
         <img src={logo} alt="logo" className="LogoIcon" />
         <h1>SmartLearnAI</h1>
       </div>
+        <div className="server-response">
+        {serverResponse && <p>{serverResponse}</p>}
+        </div>
       <div className="login-container">
         <form onSubmit={handleSubmit}>
           <h1>Login as Student</h1>

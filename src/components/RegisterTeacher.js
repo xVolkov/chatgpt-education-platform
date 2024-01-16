@@ -126,6 +126,7 @@ const RegisterTeacher = () => {
   }
 
   return (
+
     <div>
       <div className="header">
         <img src={logo} alt="logo" className="LogoIcon" />
