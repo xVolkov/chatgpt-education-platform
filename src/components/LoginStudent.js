@@ -42,7 +42,7 @@ const LoginStudent = () => {
           const jsonResponse = await response.json();
           console.log(jsonResponse.message);
           setServerResponse(jsonResponse.message);
-          navigate('/home-teacher'); // Redirect user to RegisterConfirmation page
+          navigate('/home-student'); // Redirect user to RegisterConfirmation page
         } else {
           // Handle HTTP errors
           const jsonResponse = await response.json();
