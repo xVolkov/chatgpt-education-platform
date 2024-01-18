@@ -8,6 +8,7 @@ import RegisterStudent from './components/RegisterStudent';
 import RegistrationConfirmation from './components/RegisterConfirmation';
 import ForgotPassword from './components/ForgotPassword';
 import HomeTeacher from './components/HomeTeacher';
+import HomeStudent from './components/HomeStudent';
 import './styles.css';
 
 const App = () => {
@@ -22,6 +23,7 @@ const App = () => {
         <Route path="/register-confirmation" element={<RegistrationConfirmation/>} />
         <Route path="/forgot-password" element={<ForgotPassword/>} />
         <Route path="/home-teacher" element={<HomeTeacher />} />
+        <Route path="/home-student" element={<HomeStudent />} />
         {/* Other routes can be added here */}
       </Routes>
     </Router>

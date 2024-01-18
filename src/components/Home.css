@@ -11,7 +11,29 @@
     font-size: 24px;
     font-weight: bold;
   }
-  
+
+  .RectangleStudent {
+    background-color: rgba(177, 227, 255, 0.5);
+    width: 95%;
+    height: 100px;
+    margin: 40px 0 40px 40px; /* 40px top, 0 right, 40px bottom, 40px left */
+    display: flex;
+    align-items: center;
+    justify-content: left; 
+    text-align: center;
+    padding-top: 1px;
+    font-family: Arial, sans-serif;
+    color: #000000;
+    font-size: 24px;
+    font-weight: bold;
+  }
+
+  .RectangleStudent p {
+    text-align: left;
+    width: 400px;
+    margin-left: 20px; 
+  }
+
   .RectangleButtonContainer {
     margin-top: 20px;
     display: flex;
@@ -19,16 +41,34 @@
     align-items: center;
   }
   
+  .RectangleButtonContainerStudent {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+  
   .RectangleButton {
     background-color: #003C71;
     color: white;
     padding: 20px 15px;
-    margin: 10px 0 10px 0;
     border: none;
     border-radius: 5px;
     cursor: pointer;
     width: 60%;
     font-size: 18px;
+  }
+
+  .RectangleButtonStudent {
+    background-color: transparent;
+    color: #003C71;
+    padding: 20px 15px;
+    margin: 5px 40px 10px 10px; 
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 20px;
+    font-weight: bold;
   }
   
   .AppHeader {
@@ -83,7 +123,8 @@
   
   .HomeIcon {
     width: 30px;
-    margin-right: 10px;
+    margin-right: 20px;
+    margin-left: 10px;
   }
   
   .HiTeacherText {
@@ -91,4 +132,9 @@
     font-weight: normal;
     margin-right: 10px;
   }
+
+  .SecondHeader p {
+    margin-right: 60px;
+  }
+  
   
