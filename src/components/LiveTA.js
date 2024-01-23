@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import './LiveTA.css'; // Make sure to create and style your CSS file accordingly
+import '../styles.css'; // Make sure to create and style your CSS file accordingly
 
 // Sidebar component to display chat history
 const Sidebar = ({ chats, onSelectChat }) => {
   return (
     <div className="sidebar">
+      <div className="chat-history-text">Chat history</div>
       {chats.map((chat, index) => (
         <div key={index} className="chat-preview" onClick={() => onSelectChat(chat)}>
           Chat {chat.id}
@@ -34,14 +35,16 @@ const ChatWindow = ({ currentChat, onSendMessage }) => {
           </div>
         ))}
       </div>
-      <div className="input-area">
-        <input
-          type="text"
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          onKeyPress={(e) => e.key === 'Enter' && handleSend()}
-        />
-        <button onClick={handleSend}>Send</button>
+      <div className="footer">
+        <div className="input-area">
+          <input
+            type="text"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            onKeyPress={(e) => e.key === 'Enter' && handleSend()}
+          />
+          <button onClick={handleSend}>Send</button>
+        </div>
       </div>
     </div>
   );
