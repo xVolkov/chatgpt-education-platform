@@ -1,4 +1,8 @@
 import React, { useState } from 'react';
+import logo from './assets/logo.png';
+import settings from './assets/settings.png';
+import profile from './assets/profile.png';
+import '../styles.css'; // Import the CSS file
 
 // Mock data for courses and chats
 const coursesAndChats = {
@@ -32,38 +36,55 @@ const ChatFeedback = () => {
 
   return (
     <div>
-      <label>
-        Select Course:
-        <select value={selectedCourse} onChange={handleCourseChange}>
-          <option value="">Select a course</option>
-          {Object.keys(coursesAndChats).map(course => (
-            <option key={course} value={course}>{course}</option>
-          ))}
-        </select>
-      </label>
-
-      {selectedCourse && (
+      <header className="AppHeader">
+        <div className="AppHeaderLeft">
+          <img src={logo} alt="logo" className="LogoIcon" />
+          <p>SmartLearnAI</p>
+        </div>
+        <div className="AppHeaderRight">
+          <img src={profile} alt="profile" className="ProfileIcon" />
+          <p className="HiTeacherText">Hi Teacher_Name!</p>
+          <img src={settings} alt="settings" className="SettingIcon" />
+        </div>
+      </header>
+      <header className="SecondHeader">
+        <p>Chat Feedback</p>
+      </header>
+      <div className="chat-feedback-container">
+        <h1>Chat Feedback</h1>
         <label>
-          Select Chat:
-          <select value={selectedChat} onChange={handleChatChange}>
-            <option value="">Select a chat</option>
-            {coursesAndChats[selectedCourse].map(chat => (
-              <option key={chat} value={chat}>{chat}</option>
+          Select Course:
+          <select value={selectedCourse} onChange={handleCourseChange}>
+            <option value="">Select a course</option>
+            {Object.keys(coursesAndChats).map(course => (
+              <option key={course} value={course}>{course}</option>
             ))}
           </select>
         </label>
-      )}
 
-      {selectedChat && (
-        <div>
+        {selectedCourse && (
           <label>
-            Feedback:
-            <textarea value={feedback} onChange={handleFeedbackChange} />
+            Select Chat:
+            <select value={selectedChat} onChange={handleChatChange}>
+              <option value="">Select a chat</option>
+              {coursesAndChats[selectedCourse].map(chat => (
+                <option key={chat} value={chat}>{chat}</option>
+              ))}
+            </select>
           </label>
-        </div>
-      )}
+        )}
 
-      <button onClick={handleSubmit}>Submit Feedback</button>
+        {selectedChat && (
+          <div>
+            <label>
+              Feedback:
+              <textarea value={feedback} onChange={handleFeedbackChange} />
+            </label>
+          </div>
+        )}
+
+        <button onClick={handleSubmit}>Submit Feedback</button>
+      </div>
     </div>
   );
 };

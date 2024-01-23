@@ -20,8 +20,12 @@ body, html {
     padding: 20px;
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  }  
-  
+  }
+    
+  .SecondHeader p {
+    margin-left: 15px; /* Adjust the margin as needed */
+  }
+
   h1 {
     text-align: center;
   }
@@ -158,7 +162,7 @@ body, html {
   /*Registration*/
   .register-container {
     width: 400px;
-    margin: 20px auto 0; /* Center the login container horizontally and add 20px space above */
+    margin: 20px auto 0; 
     background-color: rgba(177, 227, 255, 0.5);
     padding: 20px;
     border-radius: 5px;
@@ -166,50 +170,349 @@ body, html {
   } 
 
   /*Password Recovery*/
-.password-recovery {
-  text-align: center;
-  margin-top: 20px; /* Add margin to the top of the container */
-}
+  .password-recovery {
+    text-align: center;
+    margin-top: 20px;
+  }
 
-.password-recovery p {
-  margin-bottom: 30px; /* Add margin below the paragraph */
-}
+  .password-recovery p {
+    margin-bottom: 30px; 
+  }
 
-.password-recovery input[type="email"] {
-  display: block;
-  margin: 0 auto;
-  padding: 10px;
-  margin-bottom: 15px; 
-  border: 1px solid #dddddd;
-  border-radius: 5px;
-}
+  .password-recovery input[type="email"] {
+    display: block;
+    margin: 0 auto;
+    padding: 10px;
+    margin-bottom: 15px; 
+    border: 1px solid #dddddd;
+    border-radius: 5px;
+  }
 
-.password-recovery button {
-  padding: 10px 20px; 
-  border: none;
-  border-radius: 5px;
-  background-color: #003C71; 
-  color: #ffffff;
-  cursor: pointer;
-}
+  .password-recovery button {
+    padding: 10px 20px; 
+    border: none;
+    border-radius: 5px;
+    background-color: #003C71; 
+    color: #ffffff;
+    cursor: pointer;
+  }
 
-/*Registration Confirmation*/
-.confirmation-container {
-  text-align: center;
-}
+  /*Registration Confirmation*/
+  .confirmation-container {
+    text-align: center;
+  }
 
-.confirmation-container p {
-  margin: 20px 0; 
-}
+  .confirmation-container p {
+    margin: 20px 0; 
+  }
 
-.confirmation-container button {
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  background-color: #003C71;
-  color: #ffffff;
-  cursor: pointer;
-}
+  .confirmation-container button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #003C71;
+    color: #ffffff;
+    cursor: pointer;
+  }
+
+  /*Chat Feedback*/
+  .chat-feedback-container {
+    width: 400px;
+    margin: 20px auto 0; 
+    background-color: rgba(177, 227, 255, 0.5);
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+
+  .chat-feedback-container label {
+    display: block;
+    margin-bottom: 8px;
+  }
+
+  .chat-feedback-container select,
+  .chat-feedback-container textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 16px;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+  }
+
+  .chat-feedback-container button {
+    padding: 10px 20px; 
+    border: none;
+    border-radius: 5px;
+    background-color: #003C71; 
+    color: #ffffff;
+    cursor: pointer;
+  }
+
+  /*Add Course*/
+  .add-course-form {
+    width: 500px;
+    margin: 20px auto 0; 
+    background-color: rgba(177, 227, 255, 0.5);
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
   
+  .add-course-form form label {
+    display: block;
+    margin-bottom: 8px; 
+  }
+  
+  .add-course-form form input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 16px;
+    box-sizing: border-box;
+  }  
+
+  .add-course-form button {
+    padding: 10px 20px; 
+    border: none;
+    border-radius: 5px;
+    background-color: #003C71; 
+    color: #ffffff;
+    cursor: pointer;
+  }
+
+  /*Modify Course*/
+  .modify-course-container {
+    width: 500px;
+    margin: 20px auto 0; 
+    background-color: rgba(177, 227, 255, 0.5);
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+
+  .modify-course-container h1 {
+    text-align: center;
+  }
+
+  .modify-course-container label {
+    display: block;
+    margin-bottom: 8px;
+  }
+
+  .modify-course-container input,
+  .modify-course-container select,
+  .modify-course-container button {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 16px;
+    box-sizing: border-box;
+  }
+
+  .modify-course-container button {
+    background-color: #003C71; 
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  .modify-course-container li button {
+    background-color: #ff6262;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  /*Contact Support*/
+  .contact-supp-container {
+    width: 500px;
+    margin: 20px auto 0; 
+    background-color: rgba(177, 227, 255, 0.5);
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+
+  .contact-supp-container h1 {
+    text-align: center;
+  }
+
+  .contact-supp-container label {
+    display: block;
+    margin-bottom: 8px;
+  }
+  
+  .contact-supp-container input,
+  .contact-supp-container select,
+  .contact-supp-container textarea {
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+    margin-top: 8px; 
+  }
+
+  /*FAQs*/
+  .faq {
+    margin-left: 20px;
+  }
+
+  /*Generate Content*/
+  .content-generation-form {
+    width: 500px;
+    margin: 20px auto 0; 
+    background-color: rgba(177, 227, 255, 0.5);
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+
+  .content-generation-form select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 16px;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+  }
+
+  /*Upload Files*/
+  .upload-files-form {
+    width: 500px;
+    margin: 20px auto 0; 
+    background-color: rgba(177, 227, 255, 0.5);
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+
+  .upload-files-form select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 16px;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+  }
+
+  /* LiveTA.css */
+  .live-ta {
+    display: flex;
+    font-family: 'Arial', sans-serif;
+  }
+
+  .sidebar {
+    width: 250px;
+    padding: 10px;
+    background-color: #003C71;
+    opacity: 0.50;
+    height: 97vh; 
+    overflow-y: auto; 
+  }
+
+  .sidebar::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .sidebar::-webkit-scrollbar-thumb {
+    background-color: transparent;
+  }
+
+  .chat-history-text {
+    padding: 10px;
+    font-weight: bold;
+    font-size: 20px; 
+    text-align: center;
+    color: #fff; 
+  }
+
+  .chat-preview {
+    padding: 10px;
+    cursor: pointer;
+    border-bottom: 1px solid #eee;
+    font-size: 15px; 
+    color: #fff; 
+  }
+
+  .chat-preview:hover {
+    background-color: #0056b3;
+  }
+
+  .new-chat-button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    border: none;
+    background-color: #003C71;
+    color: white;
+    text-align: center;
+    cursor: pointer;
+  }
+
+  .main-content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .chat-window {
+    width: calc(100% - 250px);
+    padding: 10px;
+    background-color: #fff; 
+    display: flex;
+    flex-direction: column;
+    height: 87vh; 
+  }
+
+  .messages {
+    flex-grow: 1;
+    overflow-y: auto;
+    scrollbar-width: thin;
+  }
+
+  .messages::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .messages::-webkit-scrollbar-thumb {
+    background-color: transparent;
+  }
+
+  .message {
+    padding: 10px;
+    margin-bottom: 20px;
+    margin-left: 140px;
+    border-radius: 8px;
+    background-color: #f2f2f2;
+  }
+
+  .message.user {
+    background-color: #003C71;
+    opacity: 0.50;
+    color: white;
+  }
+
+  .input-area {
+    display: flex;
+  }
+
+  .input-area input {
+    flex-grow: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    margin-right: 10px;
+    margin-left: 150px;
+    width: 100%;
+  }
+
+  .input-area button {
+    padding: 10px 20px;
+    background-color: #003C71;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    cursor: pointer;
+  }
+
+  
+
   
   
