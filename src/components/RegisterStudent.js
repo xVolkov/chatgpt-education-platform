@@ -7,12 +7,15 @@ const RegisterStudent = () => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [university, setUniversity] = useState('');
+  const [studentNumber, setStudentNumber] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  // Error checking:
   const [firstNameError, setFirstNameError] = useState('');
   const [lastNameError, setLastNameError] = useState('');
   const [universityError, setUniversityError] = useState('');
+  const [studentNumberError, setStudentNumberError] = useState('');
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
   const [confirmPasswordError, setConfirmPasswordError] = useState('');
@@ -43,6 +46,11 @@ const RegisterStudent = () => {
       setUniversityError('Please select your university');
       isValid = false;
     } else {setUniversityError('');}
+
+    if (!studentNumber){
+      setStudentNumberError("Please enter your student number");
+      isValid = false;
+    } else {setStudentNumberError('');}
 
     if (!email) {
       setEmailError('Please enter your email');
@@ -84,6 +92,7 @@ const RegisterStudent = () => {
             firstName,
             lastName,
             university,
+            studentNumber,
             email,
             password,
             userType,
@@ -134,9 +143,6 @@ const RegisterStudent = () => {
       </div>
       <div className="register-container">
         <h1>Register as Student</h1>
-        <div className="server-response">
-          {serverResponse && <p>{serverResponse}</p>}
-        </div>
         <form onSubmit={handleSubmit}>
           <input
             type="text"
@@ -167,6 +173,16 @@ const RegisterStudent = () => {
             ))}
           </select>
           <span className="error-message">{universityError}</span>
+
+          <input
+            type="text"
+            value={studentNumber}
+            onChange={(e) => setStudentNumber(e.target.value)}
+            placeholder="Student Number"
+            required
+          />
+          <span className="error-message">{studentNumberError}</span>
+
           <input
             type="email"
             value={email}
@@ -175,6 +191,8 @@ const RegisterStudent = () => {
             required
           />
           <span className="error-message">{emailError}</span>
+          
+          
           <input
             type="password"
             value={password}
@@ -195,6 +213,9 @@ const RegisterStudent = () => {
             Register An Account
           </button>
         </form>
+      </div>
+      <div className="server-response">
+        {serverResponse && <p>{serverResponse}</p>}
       </div>
     </div>
   );

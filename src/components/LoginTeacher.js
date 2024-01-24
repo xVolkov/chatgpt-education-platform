@@ -36,25 +36,26 @@ const LoginTeacher = () => {
             },
             body: JSON.stringify(userData)
         });
+        
+        const server_userData = await response.json();
 
-        if (response.ok) {
-            // Handle successful registration
-            const jsonResponse = await response.json();
-            console.log(jsonResponse.message);
-            setServerResponse(jsonResponse.message);
+        if (response.status === 200) {
+            // Handle successful login
+            console.log(server_userData.message);
+            setServerResponse(server_userData.message);
+            sessionStorage.setItem('userID', server_userData.userID); // Storing userID for logged in user
+            alert('Logged-in User ID: ' + sessionStorage.getItem('userID')); // #### DEBUG ####: PRINTS USER ID OF LOGGED-IN USER
             navigate('/home-teacher'); // Redirect user to RegisterConfirmation page
           } else {
             // Handle HTTP errors
-            const jsonResponse = await response.json();
-            console.log(jsonResponse.message);
-            setServerResponse(jsonResponse.message);
-            //alert('Registration failed. Please try again.');
+            const server_userData = await response.json();
+            console.log(server_userData.message);
+            setServerResponse(server_userData.message);
             console.error('Failed to login.');
             }
         } catch (error) {
             // Handle network errors
             setServerResponse('An error occurred during login.');
-            //alert('An error occurred during registration.');
             console.error('Network error:', error);
         }
     } else {
@@ -79,9 +80,7 @@ const LoginTeacher = () => {
         <img src={logo} alt="logo" className="LogoIcon" />
         <h1>SmartLearnAI</h1>
       </div>
-        <div className="server-response">
-        {serverResponse && <p>{serverResponse}</p>}
-        </div>
+
       <div className="login-container">
         <h1>Login as Teacher</h1>
         <form onSubmit={handleSubmit}>

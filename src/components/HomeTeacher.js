@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
-import React from 'react';
-import './App.css';  // Import App-specific styles
-import './Home.css';  // Import the newly created styles file
+import React, { useState } from 'react';
+import '../App.css';  // Import App-specific styles
+import '../Home.css';  // Import the newly created styles file
 
 import settings from './assets/settings.png';
 import profile from './assets/profile.png';
@@ -9,7 +9,7 @@ import logo from './assets/logo.png';
 import home from './assets/home.png';
 
 import AddCourses from './AddCourses';
-import ModifyCourse from './ModifyCourse';
+import ModifyCourse from './ModifyCourses';
 import GenerateContent from './GenerateContent';
 import UploadFiles from './UploadFiles';
 import LiveTA from './LiveTA';
@@ -51,6 +51,16 @@ function App() {
     { text: "FAQs", path: "/faqs", className: "RectangleButton" }, // TO-DO: add a FAQs page
   ];
 
+  const [showDropdown, setShowDropdown] = useState(false); // State to control the dropdown visibility
+  
+  const navigate = useNavigate();
+
+  const handleSignOut = () => {
+    sessionStorage.clear(); // Clear the session storage
+    alert('Logged-in User ID: ' + sessionStorage.getItem('userID'));
+    navigate('/'); // Navigate to the login/register component
+  };
+
   return (
     <div className="App">
       <header className="AppHeader">
@@ -62,7 +72,17 @@ function App() {
         <div className="AppHeaderRight">
           <img src={profile} alt="profile" className="ProfileIcon" />
           <p className="HiTeacherText">Hi Teacher_Name!</p>
-          <img src={settings} alt="settings" className="SettingIcon" />
+          <img 
+            src={settings} 
+            alt="settings" 
+            className="SettingIcon"
+            onClick={() => setShowDropdown(!showDropdown)} // Toggle dropdown visibility
+          />
+          {showDropdown && (
+            <div className="dropdown-menu">
+              <button onClick={handleSignOut}>Sign out</button>
+            </div>
+          )}
         </div>
       </header>
 

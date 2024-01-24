@@ -37,18 +37,20 @@ const LoginStudent = () => {
           body: JSON.stringify(userData)
       });
 
-      if (response.ok) {
-          // Handle successful registration
-          const jsonResponse = await response.json();
-          console.log(jsonResponse.message);
-          setServerResponse(jsonResponse.message);
+      const server_userData = await response.json();
+
+      if (response.status === 200) {
+          // Handle successful login
+          console.log(server_userData.message);
+          setServerResponse(server_userData.message);
+          sessionStorage.setItem('userID', server_userData.userID); // Storing userID for logged in user
+            alert('Logged-in User ID: ' + sessionStorage.getItem('userID')); // #### DEBUG ####: PRINTS USER ID OF LOGGED-IN USER
           navigate('/home-student'); // Redirect user to RegisterConfirmation page
         } else {
           // Handle HTTP errors
-          const jsonResponse = await response.json();
-          console.log(jsonResponse.message);
-          setServerResponse(jsonResponse.message);
-          //alert('Registration failed. Please try again.');
+          const server_userData = await response.json();
+          console.log(server_userData.message);
+          setServerResponse(server_userData.message);
           console.error('Failed to login.');
           }
       } catch (error) {
@@ -79,9 +81,7 @@ const navigateToForgotPass = () => {
         <img src={logo} alt="logo" className="LogoIcon" />
         <h1>SmartLearnAI</h1>
       </div>
-        <div className="server-response">
-        {serverResponse && <p>{serverResponse}</p>}
-        </div>
+
       <div className="login-container">
         <form onSubmit={handleSubmit}>
           <h1>Login as Student</h1>
