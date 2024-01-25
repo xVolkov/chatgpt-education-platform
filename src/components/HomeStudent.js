@@ -2,12 +2,17 @@ import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-route
 import React, { useState } from 'react';
 import '../App.css';  // Import App-specific styles
 import '../Home.css';  // Import the newly created styles file
+import '../styles.css'; // Import the CSS file
 import settings from './assets/settings.png';
 import profile from './assets/profile.png';
 import logo from './assets/logo.png';
 import home from './assets/home.png';
 
-function Rectangle({ children, buttonArray }) {
+import LiveTA from './LiveTA';
+import ChatFeedback from './ChatFeedback';
+import ContactSupport from './ContactSupport';
+
+function Rectangle({ children, buttons }) {
 
   const navigate = useNavigate();
 
@@ -15,8 +20,10 @@ function Rectangle({ children, buttonArray }) {
     <div className="RectangleStudent">
       {children}
       <div className="RectangleButtonContainerStudent">
-        {buttonArray.map((buttonText, index) => (
-          <button key={index} className="RectangleButtonStudent">{buttonText}</button>
+        {buttons.map((button, index) => (
+          <button key={index} className="RectangleButtonStudent"onClick={() => navigate(button.path)}>
+            {button.text}
+            </button>
         ))}
       </div>
     </div>
@@ -24,6 +31,11 @@ function Rectangle({ children, buttonArray }) {
 }
 
 function App() {
+
+  const course = [
+    { text: "LiveTA", path:"/live-ta", className: "RectangleButton" },
+    { text: "Chat Feedback", path: "/chat-feedback", className: "RectangleButton" }, 
+  ];
 
   const [showDropdown, setShowDropdown] = useState(false); // State to control the dropdown visibility
   const navigate = useNavigate();
@@ -40,20 +52,25 @@ function App() {
           <img src={logo} alt="logo" className="LogoIcon" />
           <p>SmartLearnAI</p>
         </div>
+
         <div className="AppHeaderRight">
-          <img src={profile} alt="profile" className="ProfileIcon" />
-          <p className="HiTeacherText">Hi Student1!</p>
-          <img 
-            src={settings} 
-            alt="settings" 
-            className="SettingIcon" 
-            onClick={() => setShowDropdown(!showDropdown)} // Toggle dropdown visibility
-          />
-          {showDropdown && (
-            <div className="dropdown-menu">
-              <button onClick={handleSignOut}>Sign out</button>
-            </div>
-          )}
+          <div className="profile-section">
+            <img src={profile} alt="profile" className="ProfileIcon" />
+            <p className="HiTeacherText">Hi Student1!</p>
+          </div>
+          <div className="settings-section">
+            <img
+              src={settings}
+              alt="settings"
+              className={`SettingIcon ${showDropdown ? 'show-dropdown' : ''}`}
+              onClick={() => setShowDropdown(!showDropdown)}
+            />
+            {showDropdown && (
+              <div className="dropdown-menu">
+                <button onClick={handleSignOut}>Sign out</button>
+              </div>
+            )}
+          </div>
         </div>
       </header>
 
@@ -64,19 +81,24 @@ function App() {
         <p>Contact Support</p>
       </header>
 
-      <Rectangle buttonArray={["LiveTA", "Chats Feedback"]}>
+      <Routes>
+          <Route path="/chat-feedback" element={<ChatFeedback />} />
+          <Route path="/live-ta" element={<LiveTA />} />
+      </Routes>
+
+      <Rectangle buttons={course}>
       <p>Cloud Computing</p>
       </Rectangle>
 
-      <Rectangle buttonArray={["LiveTA", "Chats Feedback"]}>
+      <Rectangle buttons={course}>
       <p>Modelling and Simulations</p>
       </Rectangle>
 
-      <Rectangle buttonArray={["LiveTA", "Chats Feedback"]}>
+      <Rectangle buttons={course}>
       <p>Capstone II</p>
       </Rectangle>
 
-      <Rectangle buttonArray={["LiveTA", "Chats Feedback"]}>
+      <Rectangle buttons={course}>
       <p>Computer & Software Security</p>
       </Rectangle>
     </div>

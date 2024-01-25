@@ -29,6 +29,22 @@ body, html {
   h1 {
     text-align: center;
   }
+
+  .error-message {
+    color: #ff0000; 
+    font-size: 16px; 
+    font-weight: bold; 
+    display: block; 
+    margin-top: 5px; 
+  }
+
+  .HomeButton {
+    width: 30px;
+    margin-right: 20px;
+    margin-left: 10px;
+    padding: 1px; 
+    padding-left: 0px;
+  }
   
   /* Form styles */
   form {
@@ -512,7 +528,41 @@ body, html {
     cursor: pointer;
   }
 
-  
 
+  .dropdown-menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: #194676;
+    border: 1px solid #cccccc;
+    z-index: 1;
+    width: 125px;
+    margin-right: 10px;
+  }
+
+  .SettingIcon {
+    cursor: pointer;
+  }
   
+  .profile-section {
+    display: flex;
+    align-items: center;
+  }
   
+  .settings-section {
+    position: relative;
+  }
+  
+  .dropdown-menu button {
+    background-color: #194676;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+    line-height: 1;
+    color: #fff; 
+  }
+  
+  .settings-section:hover .dropdown-menu,
+.settings-section:hover .dropdown-menu button {
+  background-color: #5e8ab8; /* Your desired hover color */
+}

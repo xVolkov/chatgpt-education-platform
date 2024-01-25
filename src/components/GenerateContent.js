@@ -1,16 +1,30 @@
+import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
 import React, { useState } from 'react';
 import logo from './assets/logo.png';
 import settings from './assets/settings.png';
 import profile from './assets/profile.png';
+import home from './assets/home.png';
 import '../styles.css'; // Import the CSS file
 
 const GenerateContent = () => {
+  const navigate = useNavigate();
+  const [showDropdown, setShowDropdown] = useState(false); // State to control the dropdown visibility
   const [selectedCourse, setSelectedCourse] = useState('');
   const [contentType, setContentType] = useState('');
   const [contentComplexity, setContentComplexity] = useState('');
 
   const handleGenerate = () => {
     // Logic to generate and download content
+  };
+
+  const handleHomeClick = () => {
+    navigate('/home-teacher');
+  }; 
+
+  const handleSignOut = () => {
+    sessionStorage.clear(); // Clear the session storage
+    alert('Logged-in User ID: ' + sessionStorage.getItem('userID'));
+    navigate('/'); // Navigate to the login/register component
   };
 
   return (
@@ -23,10 +37,25 @@ const GenerateContent = () => {
         <div className="AppHeaderRight">
           <img src={profile} alt="profile" className="ProfileIcon" />
           <p className="HiTeacherText">Hi Teacher_Name!</p>
-          <img src={settings} alt="settings" className="SettingIcon" />
+          <div className="settings-section">
+            <img
+              src={settings}
+              alt="settings"
+              className={`SettingIcon ${showDropdown ? 'show-dropdown' : ''}`}
+              onClick={() => setShowDropdown(!showDropdown)}
+            />
+            {showDropdown && (
+              <div className="dropdown-menu">
+                <button onClick={handleSignOut}>Sign out</button>
+              </div>
+            )}
+          </div>
         </div>
       </header>
       <header className="SecondHeader">
+        <button className="HomeButton" onClick={handleHomeClick}>
+          <img src={home} alt="home" className="HomeIcon" />
+        </button>
         <p>Generate Content</p>
       </header>
 

@@ -1,7 +1,9 @@
+import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
 import React, { useState } from 'react';
 import logo from './assets/logo.png';
 import settings from './assets/settings.png';
 import profile from './assets/profile.png';
+import home from './assets/home.png';
 import '../styles.css'; // Import the CSS file
 
 // Mock data for courses and chats
@@ -12,6 +14,8 @@ const coursesAndChats = {
 };
 
 const ChatFeedback = () => {
+  const navigate = useNavigate();
+  const [showDropdown, setShowDropdown] = useState(false); // State to control the dropdown visibility
   const [selectedCourse, setSelectedCourse] = useState('');
   const [selectedChat, setSelectedChat] = useState('');
   const [feedback, setFeedback] = useState('');
@@ -29,6 +33,16 @@ const ChatFeedback = () => {
     setFeedback(event.target.value);
   };
 
+  const handleHomeClick = () => {
+    navigate('/home-teacher');
+  };  
+
+  const handleSignOut = () => {
+    sessionStorage.clear(); // Clear the session storage
+    alert('Logged-in User ID: ' + sessionStorage.getItem('userID'));
+    navigate('/'); // Navigate to the login/register component
+  };
+
   const handleSubmit = () => {
     // Logic to submit the feedback
     console.log('Feedback submitted for', selectedCourse, selectedChat, feedback);
@@ -44,10 +58,25 @@ const ChatFeedback = () => {
         <div className="AppHeaderRight">
           <img src={profile} alt="profile" className="ProfileIcon" />
           <p className="HiTeacherText">Hi Teacher_Name!</p>
-          <img src={settings} alt="settings" className="SettingIcon" />
+          <div className="settings-section">
+            <img
+              src={settings}
+              alt="settings"
+              className={`SettingIcon ${showDropdown ? 'show-dropdown' : ''}`}
+              onClick={() => setShowDropdown(!showDropdown)}
+            />
+            {showDropdown && (
+              <div className="dropdown-menu">
+                <button onClick={handleSignOut}>Sign out</button>
+              </div>
+            )}
+          </div>
         </div>
       </header>
       <header className="SecondHeader">
+        <button className="HomeButton" onClick={handleHomeClick}>
+          <img src={home} alt="home" className="HomeIcon" />
+        </button>
         <p>Chat Feedback</p>
       </header>
       <div className="chat-feedback-container">
