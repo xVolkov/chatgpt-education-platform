@@ -1,0 +1,84 @@
+.live-ta {
+  display: flex;
+  font-family: 'Arial', sans-serif;
+}
+
+.sidebar {
+  width: 250px;
+  border-right: 1px solid #ccc;
+  padding: 10px;
+  background-color: #f7f7f7;
+}
+
+.chat-preview {
+  padding: 10px;
+  cursor: pointer;
+  border-bottom: 1px solid #eee;
+}
+
+.chat-window {
+  width: calc(100% - 250px);
+  padding: 20px;
+}
+
+.messages {
+  margin-bottom: 20px;
+}
+
+.message {
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 20px;
+  background-color: #e0e0e0;
+}
+
+.message.user {
+  background-color: #007bff;
+  color: white;
+}
+
+.input-area {
+  display: flex;
+}
+
+.input-area input {
+  flex-grow: 1;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  margin-right: 10px;
+}
+
+.input-area button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  border: none;
+  border-radius: 20px;
+  color: white;
+  cursor: pointer;
+}
+
+.chat-preview:hover {
+  background-color: #f5f5f5;
+}
+
+.new-chat-button {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  border: none;
+  background-color: #5cb85c;
+  color: white;
+  text-align: center;
+  cursor: pointer;
+}
+
+.new-chat-button:hover {
+  background-color: #4cae4c;
+}
+
+.main-content {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}

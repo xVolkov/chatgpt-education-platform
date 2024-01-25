@@ -70,19 +70,23 @@ function App() {
         </div>
         
         <div className="AppHeaderRight">
-          <img src={profile} alt="profile" className="ProfileIcon" />
-          <p className="HiTeacherText">Hi Teacher_Name!</p>
-          <img 
-            src={settings} 
-            alt="settings" 
-            className="SettingIcon"
-            onClick={() => setShowDropdown(!showDropdown)} // Toggle dropdown visibility
-          />
-          {showDropdown && (
-            <div className="dropdown-menu">
-              <button onClick={handleSignOut}>Sign out</button>
-            </div>
-          )}
+          <div className="profile-section">
+            <img src={profile} alt="profile" className="ProfileIcon" />
+            <p className="HiTeacherText">Hi Teacher_Name!</p>
+          </div>
+          <div className="settings-section">
+            <img
+              src={settings}
+              alt="settings"
+              className={`SettingIcon ${showDropdown ? 'show-dropdown' : ''}`}
+              onClick={() => setShowDropdown(!showDropdown)}
+            />
+            {showDropdown && (
+              <div className="dropdown-menu">
+                <button onClick={handleSignOut}>Sign out</button>
+              </div>
+            )}
+          </div>
         </div>
       </header>
 
@@ -97,7 +101,7 @@ function App() {
           <Route path="/upload-files" element={<UploadFiles />} />
           <Route path="/live-ta" element={<LiveTA />} />
           {/* Add Route for ModifyCourse if it exists */}
-        </Routes>
+      </Routes>
 
       <Rectangle buttons={chatButtons}>
         <p>Chat</p>

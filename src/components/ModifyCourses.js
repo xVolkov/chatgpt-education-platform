@@ -1,11 +1,15 @@
+import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import logo from './assets/logo.png';
 import settings from './assets/settings.png';
 import profile from './assets/profile.png';
+import home from './assets/home.png';
 import '../styles.css'; // Import the CSS file
 import { wait } from '@testing-library/user-event/dist/utils';
 
 const ModifyCourses = () => {
+  const navigate = useNavigate();
+  const [showDropdown, setShowDropdown] = useState(false); // State to control the dropdown visibility
   const [courseCodes, setCourseCodes] = useState([]); // State to store course codes
   const [selectedCourseCode, setSelectedCourseCode] = useState('');
   const [courseDetails, setCourseDetails] = useState({});
@@ -51,6 +55,16 @@ const ModifyCourses = () => {
     });
   };
 
+  const handleHomeClick = () => {
+    navigate('/home-teacher');
+  };  
+
+  const handleSignOut = () => {
+    sessionStorage.clear(); // Clear the session storage
+    alert('Logged-in User ID: ' + sessionStorage.getItem('userID'));
+    navigate('/'); // Navigate to the login/register component
+  };
+
   const handleSubmit = async () => {
     // Logic to handle the submit action
     await fetch('http://localhost:5000/update-course', { 
@@ -78,10 +92,25 @@ const ModifyCourses = () => {
         <div className="AppHeaderRight">
           <img src={profile} alt="profile" className="ProfileIcon" />
           <p className="HiTeacherText">Hi Teacher_Name!</p>
-          <img src={settings} alt="settings" className="SettingIcon" />
+          <div className="settings-section">
+            <img
+              src={settings}
+              alt="settings"
+              className={`SettingIcon ${showDropdown ? 'show-dropdown' : ''}`}
+              onClick={() => setShowDropdown(!showDropdown)}
+            />
+            {showDropdown && (
+              <div className="dropdown-menu">
+                <button onClick={handleSignOut}>Sign out</button>
+              </div>
+            )}
+          </div>
         </div>
       </header>
       <header className="SecondHeader">
+        <button className="HomeButton" onClick={handleHomeClick}>
+          <img src={home} alt="home" className="HomeIcon" />
+        </button>
         <p>Modify a Course</p>
       </header>
       
