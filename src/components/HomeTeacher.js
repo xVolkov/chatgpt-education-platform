@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
-import React from 'react';
-import './App.css';  // Import App-specific styles
-import './Home.css';  // Import the newly created styles file
+import React, { useState } from 'react';
+import '../App.css';  // Import App-specific styles
+import '../Home.css';  // Import the newly created styles file
 
 import settings from './assets/settings.png';
 import profile from './assets/profile.png';
@@ -9,7 +9,7 @@ import logo from './assets/logo.png';
 import home from './assets/home.png';
 
 import AddCourses from './AddCourses';
-import ModifyCourse from './ModifyCourse';
+import ModifyCourse from './ModifyCourses';
 import GenerateContent from './GenerateContent';
 import UploadFiles from './UploadFiles';
 import LiveTA from './LiveTA';
@@ -51,6 +51,16 @@ function App() {
     { text: "FAQs", path: "/faqs", className: "RectangleButton" }, // TO-DO: add a FAQs page
   ];
 
+  const [showDropdown, setShowDropdown] = useState(false); // State to control the dropdown visibility
+  
+  const navigate = useNavigate();
+
+  const handleSignOut = () => {
+    sessionStorage.clear(); // Clear the session storage
+    alert('Logged-in User ID: ' + sessionStorage.getItem('userID'));
+    navigate('/'); // Navigate to the login/register component
+  };
+
   return (
     <div className="App">
       <header className="AppHeader">
@@ -60,9 +70,23 @@ function App() {
         </div>
         
         <div className="AppHeaderRight">
-          <img src={profile} alt="profile" className="ProfileIcon" />
-          <p className="HiTeacherText">Hi Teacher_Name!</p>
-          <img src={settings} alt="settings" className="SettingIcon" />
+          <div className="profile-section">
+            <img src={profile} alt="profile" className="ProfileIcon" />
+            <p className="HiTeacherText">Hi Teacher_Name!</p>
+          </div>
+          <div className="settings-section">
+            <img
+              src={settings}
+              alt="settings"
+              className={`SettingIcon ${showDropdown ? 'show-dropdown' : ''}`}
+              onClick={() => setShowDropdown(!showDropdown)}
+            />
+            {showDropdown && (
+              <div className="dropdown-menu">
+                <button onClick={handleSignOut}>Sign out</button>
+              </div>
+            )}
+          </div>
         </div>
       </header>
 
@@ -77,7 +101,7 @@ function App() {
           <Route path="/upload-files" element={<UploadFiles />} />
           <Route path="/live-ta" element={<LiveTA />} />
           {/* Add Route for ModifyCourse if it exists */}
-        </Routes>
+      </Routes>
 
       <Rectangle buttons={chatButtons}>
         <p>Chat</p>

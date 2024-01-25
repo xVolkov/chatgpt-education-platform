@@ -1,18 +1,29 @@
-import React from 'react';
-import './App.css';  // Import App-specific styles
-import './Home.css';  // Import the newly created styles file
+import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
+import '../App.css';  // Import App-specific styles
+import '../Home.css';  // Import the newly created styles file
+import '../styles.css'; // Import the CSS file
 import settings from './assets/settings.png';
 import profile from './assets/profile.png';
 import logo from './assets/logo.png';
 import home from './assets/home.png';
 
-function Rectangle({ children, buttonArray }) {
+import LiveTA from './LiveTA';
+import ChatFeedback from './ChatFeedback';
+import ContactSupport from './ContactSupport';
+
+function Rectangle({ children, buttons }) {
+
+  const navigate = useNavigate();
+
   return (
     <div className="RectangleStudent">
       {children}
       <div className="RectangleButtonContainerStudent">
-        {buttonArray.map((buttonText, index) => (
-          <button key={index} className="RectangleButtonStudent">{buttonText}</button>
+        {buttons.map((button, index) => (
+          <button key={index} className="RectangleButtonStudent"onClick={() => navigate(button.path)}>
+            {button.text}
+            </button>
         ))}
       </div>
     </div>
@@ -20,6 +31,20 @@ function Rectangle({ children, buttonArray }) {
 }
 
 function App() {
+
+  const course = [
+    { text: "LiveTA", path:"/live-ta", className: "RectangleButton" },
+    { text: "Chat Feedback", path: "/chat-feedback", className: "RectangleButton" }, 
+  ];
+
+  const [showDropdown, setShowDropdown] = useState(false); // State to control the dropdown visibility
+  const navigate = useNavigate();
+  const handleSignOut = () => {
+    sessionStorage.clear(); // Clear the session storage
+    alert('Logged-in User ID: ' + sessionStorage.getItem('userID'));
+    navigate('/'); // Navigate to the login/register component
+  };
+
   return (
     <div className="App">
       <header className="AppHeader">
@@ -27,34 +52,54 @@ function App() {
           <img src={logo} alt="logo" className="LogoIcon" />
           <p>SmartLearnAI</p>
         </div>
+
         <div className="AppHeaderRight">
-          <img src={profile} alt="profile" className="ProfileIcon" />
-          <p className="HiTeacherText">Hi Student1!</p>
-          <img src={settings} alt="settings" className="SettingIcon" />
+          <div className="profile-section">
+            <img src={profile} alt="profile" className="ProfileIcon" />
+            <p className="HiTeacherText">Hi Student1!</p>
+          </div>
+          <div className="settings-section">
+            <img
+              src={settings}
+              alt="settings"
+              className={`SettingIcon ${showDropdown ? 'show-dropdown' : ''}`}
+              onClick={() => setShowDropdown(!showDropdown)}
+            />
+            {showDropdown && (
+              <div className="dropdown-menu">
+                <button onClick={handleSignOut}>Sign out</button>
+              </div>
+            )}
+          </div>
         </div>
       </header>
 
       <header className="SecondHeader">
         <img src={home} alt="home" className="HomeIcon" />
         <p>Dashboard</p>
-        <p>Course Enrollment</p>
-        <p>Feedback</p>
+        <p>Add Courses</p>
+        <p>Contact Support</p>
       </header>
 
-      <Rectangle buttonArray={["Lecture Notes", "Assignments", "Quizzes", "LiveTA"]}>
+      <Routes>
+          <Route path="/chat-feedback" element={<ChatFeedback />} />
+          <Route path="/live-ta" element={<LiveTA />} />
+      </Routes>
+
+      <Rectangle buttons={course}>
       <p>Cloud Computing</p>
       </Rectangle>
 
-      <Rectangle buttonArray={["Lecture Notes", "Assignments", "Quizzes", "LiveTA"]}>
+      <Rectangle buttons={course}>
       <p>Modelling and Simulations</p>
       </Rectangle>
 
-      <Rectangle buttonArray={["Lecture Notes", "Assignments", "Quizzes", "LiveTA"]}>
+      <Rectangle buttons={course}>
       <p>Capstone II</p>
       </Rectangle>
 
-      <Rectangle buttonArray={["Lecture Notes", "Assignments", "Quizzes", "LiveTA"]}>
-      <p>Computer and Software Security</p>
+      <Rectangle buttons={course}>
+      <p>Computer & Software Security</p>
       </Rectangle>
     </div>
   );

@@ -14,7 +14,7 @@ import RegistrationConfirmation from './components/RegisterConfirmation';
 // Teacher Home Page:
 import HomeTeacher from './components/HomeTeacher';
 import AddCourses from './components/AddCourses';
-import ModifyCourse from './components/ModifyCourse';
+import ModifyCourse from './components/ModifyCourses';
 import GenerateContent from './components/GenerateContent';
 import UploadFiles from './components/UploadFiles';
 import LiveTA from './components/LiveTA';

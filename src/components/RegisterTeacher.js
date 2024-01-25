@@ -7,15 +7,19 @@ const RegisterTeacher = () => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [university, setUniversity] = useState('');
+  const [teacherNumber, setTeacherNumber] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  // Error Checking / Input Validation:
   const [firstNameError, setFirstNameError] = useState('');
   const [lastNameError, setLastNameError] = useState('');
   const [universityError, setUniversityError] = useState('');
+  const [teacherNumberError, setTeacherNumberError] = useState('');
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
   const [confirmPasswordError, setConfirmPasswordError] = useState('');
+  
   const [serverResponse, setServerResponse] = useState(''); // Displays python flask server response
   const navigate = useNavigate(); // Hook for navigation
 
@@ -43,6 +47,11 @@ const RegisterTeacher = () => {
       setUniversityError('Please select your university');
       isValid = false;
     } else {setUniversityError('');}
+
+    if (!teacherNumber){
+      setTeacherNumberError("Please enter your student number");
+      isValid = false;
+    } else {setTeacherNumberError('');}
 
     if (!email) {
       setEmailError('Please enter your email');
@@ -84,6 +93,7 @@ const RegisterTeacher = () => {
             firstName,
             lastName,
             university,
+            teacherNumber,
             email,
             password,
             userType,
@@ -134,9 +144,6 @@ const RegisterTeacher = () => {
       </div>
       <div className="register-container">
         <h1>Register as Teacher</h1>
-        <div className="server-response">
-          {serverResponse && <p>{serverResponse}</p>}
-        </div>
         <form onSubmit={handleSubmit}>
           <input
             type="text"
@@ -167,6 +174,16 @@ const RegisterTeacher = () => {
             ))}
           </select>
           <span className="error-message">{universityError}</span>
+
+          <input
+            type="text"
+            value={teacherNumber}
+            onChange={(e) => setTeacherNumber(e.target.value)}
+            placeholder="Teacher Number"
+            required
+          />
+          <span className="error-message">{teacherNumberError}</span>
+
           <input
             type="email"
             value={email}
@@ -195,6 +212,9 @@ const RegisterTeacher = () => {
             Register An Account
           </button>
         </form>
+      </div>
+      <div className="server-response">
+        {serverResponse && <p>{serverResponse}</p>}
       </div>
     </div>
   );
