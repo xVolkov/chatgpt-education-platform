@@ -15,7 +15,7 @@ body, html {
   
   .login-container {
     width: 400px;
-    margin: 20px auto 0; /* Center the login container horizontally and add 20px space above */
+    margin: 20px auto 0; 
     background-color: rgba(177, 227, 255, 0.5);
     padding: 20px;
     border-radius: 5px;
@@ -23,7 +23,7 @@ body, html {
   }
     
   .SecondHeader p {
-    margin-left: 15px; /* Adjust the margin as needed */
+    margin-left: 15px;
   }
 
   h1 {
@@ -40,12 +40,20 @@ body, html {
 
   .HomeButton {
     width: 30px;
-    margin-right: 20px;
+    margin-right: 10px;
     margin-left: 10px;
     padding: 1px; 
     padding-left: 0px;
   }
   
+  .ContactSupportButton {
+    width: 30px;
+    margin-right: 20px;
+    margin-left: 5px;
+    padding: 5px 10px;
+    white-space: nowrap; 
+  }
+
   /* Form styles */
   form {
     display: flex;
@@ -368,8 +376,12 @@ body, html {
   }
 
   /*FAQs*/
-  .faq {
-    margin-left: 20px;
+  .faqs {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center; /* If you want to center-align text within each faq */
   }
 
   /*Generate Content*/
@@ -431,35 +443,44 @@ body, html {
     background-color: transparent;
   }
 
+  .chat-history {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
   .chat-history-text {
     padding: 10px;
     font-weight: bold;
-    font-size: 20px; 
+    font-size: 20px;
     text-align: center;
-    color: #fff; 
+    color: #fff;
+    margin-left: 40px; 
   }
 
   .chat-preview {
-    padding: 10px;
+    padding: 12px;
     cursor: pointer;
-    border-bottom: 1px solid #eee;
     font-size: 15px; 
     color: #fff; 
   }
 
   .chat-preview:hover {
-    background-color: #0056b3;
+    background-color: #004a85; 
+    opacity: 1; 
+    border-radius: 12px; 
   }
 
   .new-chat-button {
     display: block;
-    width: 100%;
-    padding: 10px;
+    padding: 8px;
     border: none;
     background-color: #003C71;
     color: white;
     text-align: center;
     cursor: pointer;
+    font-size: 35px;
+    font-weight: bolder;
   }
 
   .main-content {
@@ -469,6 +490,7 @@ body, html {
   }
 
   .chat-window {
+    margin-top: 60px;
     width: calc(100% - 250px);
     padding: 10px;
     background-color: #fff; 

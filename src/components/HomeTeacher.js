@@ -61,6 +61,10 @@ function App() {
     navigate('/'); // Navigate to the login/register component
   };
 
+  const handleHomeClick = () => {
+    navigate('/home-teacher');
+  }; 
+
   return (
     <div className="App">
       <header className="AppHeader">
@@ -91,8 +95,9 @@ function App() {
       </header>
 
       <header className="SecondHeader">
-        <img src={home} alt="home" className="HomeIcon" />
-        <p>Dashboard</p>
+        <button className="HomeButton" onClick={handleHomeClick}>
+          <img src={home} alt="home" className="HomeIcon" />
+        </button>
       </header>
 
       <Routes>

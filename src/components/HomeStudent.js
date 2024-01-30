@@ -45,6 +45,14 @@ function App() {
     navigate('/'); // Navigate to the login/register component
   };
 
+  const handleHomeClick = () => {
+    navigate('/home-student');
+  }; 
+
+  const handleSuppClick = () => {
+    navigate('/contact-support');
+  }; 
+
   return (
     <div className="App">
       <header className="AppHeader">
@@ -75,10 +83,13 @@ function App() {
       </header>
 
       <header className="SecondHeader">
-        <img src={home} alt="home" className="HomeIcon" />
-        <p>Dashboard</p>
+        <button className="HomeButton" onClick={handleHomeClick}>
+          <img src={home} alt="home" className="HomeIcon" />
+        </button>
         <p>Add Courses</p>
-        <p>Contact Support</p>
+        <button className="ContactSupportButton" onClick={handleSuppClick}>
+          Contact Support
+        </button>
       </header>
 
       <Routes>

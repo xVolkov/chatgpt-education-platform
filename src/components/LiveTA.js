@@ -2,10 +2,13 @@ import React, { useState } from 'react';
 import '../styles.css'; // Make sure to create and style your CSS file accordingly
 
 // Sidebar component to display chat history
-const Sidebar = ({ chats, onSelectChat }) => {
+const Sidebar = ({ chats, onSelectChat, onNewChat }) => {
   return (
     <div className="sidebar">
-      <div className="chat-history-text">Chat history</div>
+      <div className="chat-history">
+        <div className="chat-history-text">Chat history</div>
+        <button className="new-chat-button" onClick={onNewChat}>+</button>
+      </div>
       {chats.map((chat, index) => (
         <div key={index} className="chat-preview" onClick={() => onSelectChat(chat)}>
           Chat {chat.id}
@@ -82,9 +85,8 @@ const LiveTA = () => {
 
   return (
     <div className="live-ta">
-      <Sidebar chats={chats} onSelectChat={handleSelectChat} />
+      <Sidebar chats={chats} onSelectChat={handleSelectChat} onNewChat={handleCreateNewChat} />
       <div className="main-content">
-        <button className="new-chat-button" onClick={handleCreateNewChat}>Create New Chat</button>
         {currentChat && <ChatWindow currentChat={currentChat} onSendMessage={handleSendMessage} />}
       </div>
     </div>
