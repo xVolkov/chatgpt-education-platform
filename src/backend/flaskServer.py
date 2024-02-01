@@ -1,9 +1,14 @@
-from flask import Flask, request, jsonify
+from bson import json_util
+from flask import Flask, request, jsonify, send_file
 from flask_cors import CORS
 import hashlib
 import uuid
 from pymongo import MongoClient
 from bson.objectid import ObjectId
+from bson.binary import Binary
+from werkzeug.utils import secure_filename
+import os
+import io
 
 app = Flask(__name__)
 CORS(app)
@@ -12,6 +17,7 @@ mongo_client = MongoClient('mongodb://localhost:27017/')
 db = mongo_client['capstone']
 users_collection = db['users']
 courses_collection = db['courses']
+files_collection = db['files']
 
 def hash_password(password):
     salt = uuid.uuid4().hex
@@ -83,7 +89,6 @@ def get_course_codes():
     if not teacher_id:
         return jsonify({"message": "Teacher ID not provided"}), 400
     courses = courses_collection.find({"teacherID": teacher_id}, {"courseCode": 1})
-    #courses = courses_collection.find({}, {"courseCode": 1})
     course_codes = [course['courseCode'] for course in courses]
     return jsonify({"courseCodes": course_codes}), 200
 
@@ -113,6 +118,78 @@ def get_courses():
     for course in courses:
         course['_id'] = str(course['_id'])
     return jsonify(courses), 200
+
+@app.route('/upload-file', methods=['POST'])
+def upload_files():
+    try:
+        course_code = request.form['courseCode']
+        user_id = request.form['userID']
+        file_type = request.form['fileType']
+        file_extension = request.form['fileExtension']
+        file_name = request.form['fileName']
+
+        file = request.files['file'] # one file at a time
+        
+        # Save the file
+        file_id = str(uuid.uuid4()) # Generate a new course ID or find the correct one based on your logic
+        save_file(file, file_id, course_code, user_id, file_type, file_extension, file_name)
+        
+        return jsonify({'message': 'File uploaded successfully'}), 200
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+# New function to save files
+def save_file(file, file_id, course_code, user_id, file_type, file_extension, file_name):
+    # Convert file to binary
+    file_binary = Binary(file.read())
+    
+    # Insert file metadata along with the binary content into the database
+    file_metadata = {
+        'fileID': file_id,
+        'courseCode': course_code,
+        'teacherID': user_id,
+        'fileType': file_type,
+        'fileExtension': file_extension,
+        'fileName': file_name,
+        'fileContent': file_binary
+    }
+    files_collection.insert_one(file_metadata)
+    
+@app.route('/get-course-files', methods=['GET'])
+def get_course_files():
+    course_code = request.args.get('courseCode')
+    files = list(files_collection.find({"courseCode": course_code}))
+    # Convert ObjectId to string for each file
+    for file in files:
+        file['_id'] = str(file['_id'])
+    # Serialize the list of files to JSON using json_util
+    files_json = json_util.dumps(files)
+    return files_json, 200, {'Content-Type': 'application/json'}
+
+@app.route('/delete-file', methods=['POST'])
+def delete_file():
+    file_id = request.json['fileID']
+    files_collection.delete_one({"_id": ObjectId(file_id)})
+    return jsonify({"message": "File deleted successfully"}), 200
+
+@app.route('/download-file', methods=['GET'])
+def download_file():
+    file_id = request.args.get('fileID')
+    file = files_collection.find_one({"_id": ObjectId(file_id)})
+    if file:
+        # Extract file metadata
+        file_name = file['fileName']
+        file_content = file['fileContent']
+        
+        # Create a BytesIO object with the file content
+        file_stream = io.BytesIO(file_content)
+        
+        return send_file(
+            file_stream,
+            as_attachment=True,
+            download_name=file_name
+        )
+    return jsonify({"message": "File not found"}), 404
 
 if __name__ == '__main__':
     app.run(debug=True)

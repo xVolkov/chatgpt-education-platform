@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import logo from './assets/logo.png';
 import settings from './assets/settings.png';
 import profile from './assets/profile.png';
@@ -13,6 +14,7 @@ const ModifyCourses = () => {
   const [courseCodes, setCourseCodes] = useState([]); // State to store course codes
   const [selectedCourseCode, setSelectedCourseCode] = useState('');
   const [courseDetails, setCourseDetails] = useState({});
+  const [courseFiles, setCourseFiles] = useState([]);
   
   // Fetch course codes from the server
   useEffect(() => {
@@ -29,10 +31,57 @@ const ModifyCourses = () => {
         console.error('Error fetching course codes:', error);
       }
     };
-
     fetchCourseCodes();
-    
   }, []);
+
+  useEffect(() => {
+    // Fetch files for the selected course
+    const fetchCourseFiles = async () => {
+      if (selectedCourseCode) {
+        const response = await axios.get(`http://localhost:5000/get-course-files?courseCode=${selectedCourseCode}`);
+        setCourseFiles(response.data);
+      }
+    };
+    fetchCourseFiles();
+  }, [selectedCourseCode]);
+
+  const deleteFile = async (fileID) => {
+    try {
+      await axios.post('http://localhost:5000/delete-file', { fileID });
+      // Refresh the files list
+      setCourseFiles(courseFiles.filter(file => file._id !== fileID));
+      alert(`File has been deleted!`)
+    } catch (error) {
+      console.error('Error deleting file:', error);
+    }
+  };
+
+  const downloadFile = async (fileID) => {
+    try {
+      const response = await axios.get(`http://localhost:5000/download-file?fileID=${fileID}`, { responseType: 'blob' });
+      const blob = new Blob([response.data], { type: response.headers['content-type'] });
+      const url = window.URL.createObjectURL(blob);
+      
+      // Create a temporary <a> element with the download link
+      const a = document.createElement('a');
+      a.href = url;
+      const contentDisposition = response.headers['content-disposition'];
+      const fileNameMatch = contentDisposition && contentDisposition.match(/filename=([^;]+)/); // Updated regex
+      const fileName = fileNameMatch ? fileNameMatch[1] : 'downloaded_file'; // Provide a default name if filename is not found
+      a.download = fileName;
+      a.style.display = 'none';
+      
+      // Append the <a> element to the DOM and trigger a click event
+      document.body.appendChild(a);
+      a.click();
+      
+      // Clean up by removing the <a> element
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+    } catch (error) {
+      console.error('Error downloading file:', error);
+    }
+  };
 
   const handleCourseChange = async (event) => {
     const courseCode = event.target.value;
@@ -46,13 +95,6 @@ const ModifyCourses = () => {
   const handleDetailChange = (event) => {
     const { name, value } = event.target;
     setCourseDetails(prevDetails => ({ ...prevDetails, [name]: value }));
-  };
-
-  const handleDeleteFile = (fileName) => {
-    setCourseDetails({
-      ...courseDetails,
-      files: courseDetails.files.filter(file => file !== fileName)
-    });
   };
 
   const handleHomeClick = () => {
@@ -144,9 +186,11 @@ const ModifyCourses = () => {
             <div>
               Files:
               <ul>
-                {courseDetails.files && courseDetails.files.map(file => (
-                  <li key={file}>
-                    {file} <button onClick={() => handleDeleteFile(file)}>Delete</button>
+                {courseFiles.map(file => (
+                  <li key={file._id}>
+                    {file.fileName} 
+                    <button onClick={() => deleteFile(file._id)}>Delete</button>
+                    <button onClick={() => downloadFile(file._id)}>Download</button>
                   </li>
                 ))}
               </ul>
