@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../App.css';  // Import App-specific styles
 import '../Home.css';  // Import the newly created styles file
 import '../styles.css'; // Import the CSS file
@@ -38,6 +38,23 @@ function App() {
   ];
 
   const [showDropdown, setShowDropdown] = useState(false); // State to control the dropdown visibility
+  const [teacherName, setTeacherName] = useState('Teacher_Name!'); // State for teacher's name
+  useEffect(() => {
+    // Fetch the teacher's name when the component mounts
+    const userID = sessionStorage.getItem('userID');
+    if (userID) {
+      // Adjust the URL to your actual endpoint
+      fetch(`http://localhost:5000/user/${userID}`)
+        .then(response => response.json())
+        .then(data => {
+          if (data.firstName) {
+            setTeacherName(`Hi ${data.firstName}!`);
+          }
+        })
+        .catch(err => console.error('Error fetching teacher name:', err));
+    }
+  }, []);
+
   const navigate = useNavigate();
   const handleSignOut = () => {
     sessionStorage.clear(); // Clear the session storage
@@ -64,7 +81,7 @@ function App() {
         <div className="AppHeaderRight">
           <div className="profile-section">
             <img src={profile} alt="profile" className="ProfileIcon" />
-            <p className="HiTeacherText">Hi Student1!</p>
+            <p className="HiTeacherText">{teacherName}</p>
           </div>
           <div className="settings-section">
             <img

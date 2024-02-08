@@ -3,6 +3,7 @@ from flask import Flask, request, jsonify, send_file
 from flask_cors import CORS
 import hashlib
 import uuid
+from openai import OpenAI
 from pymongo import MongoClient
 from bson.objectid import ObjectId
 from bson.binary import Binary
@@ -13,11 +14,15 @@ import io
 app = Flask(__name__)
 CORS(app)
 
+client = OpenAI(api_key="")
+
 mongo_client = MongoClient('mongodb://localhost:27017/')
 db = mongo_client['capstone']
 users_collection = db['users']
 courses_collection = db['courses']
 files_collection = db['files']
+chats_collection = db['chats']
+chat_sessions_collection = db['chatsessions']
 
 def hash_password(password):
     salt = uuid.uuid4().hex
@@ -40,6 +45,15 @@ def register_user():
         return jsonify({"message": "Registered successfully"}), 201
     except:
         print("Error in registering a user")
+
+@app.route('/user/<userID>', methods=['GET'])
+def get_user(userID):
+    user = users_collection.find_one({"userID": userID})
+    if user:
+        # You might want to exclude sensitive data from the response
+        return jsonify({"firstName": user["firstName"]}), 200
+    else:
+        return jsonify({"message": "User not found"}), 404
 
 # Student Login endpoint
 @app.route('/login-student', methods=['POST'])
@@ -190,6 +204,35 @@ def download_file():
             download_name=file_name
         )
     return jsonify({"message": "File not found"}), 404
+
+@app.route('/chat-with-bot', methods=['POST'])
+def chat_with_bot():
+    data = request.json
+    print(data)
+    user_message = data['input']
+    try:
+        response = client.chat.completions.create(
+            messages=[
+                {
+                    "role":"user",
+                    "content":user_message
+                }
+            ],
+            model = "gpt-3.5-turbo"
+        )
+        print('DEBUG')
+        bot_response = response.choices[0].message.content
+        print(bot_response)
+        return jsonify({'response': bot_response})
+    
+    except Exception as e:
+        print(e)
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/fetch_chats', methods=['GET'])
+def fetch_chats():
+    chats = list(chats_collection.find({}, {'_id': 0}))  # Exclude the MongoDB default _id field
+    return json_util.dumps({'chats': chats}), 200
 
 if __name__ == '__main__':
     app.run(debug=True)

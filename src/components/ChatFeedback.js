@@ -1,29 +1,26 @@
 import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import logo from './assets/logo.png';
 import settings from './assets/settings.png';
 import profile from './assets/profile.png';
 import home from './assets/home.png';
 import '../styles.css'; // Import the CSS file
 
-// Mock data for courses and chats
-const coursesAndChats = {
-  'CS101': ['Chat 1', 'Chat 2', 'Chat 3'],
-  'MATH201': ['Chat 1', 'Chat 2'],
-  // Add more courses and chats as needed
-};
-
 const ChatFeedback = () => {
   const navigate = useNavigate();
-  const [showDropdown, setShowDropdown] = useState(false); // State to control the dropdown visibility
-  const [selectedCourse, setSelectedCourse] = useState('');
+  const [showDropdown, setShowDropdown] = useState(false);
   const [selectedChat, setSelectedChat] = useState('');
   const [feedback, setFeedback] = useState('');
+  const [chats, setChats] = useState([]); // State to hold chats fetched from the server
 
-  const handleCourseChange = (event) => {
-    setSelectedCourse(event.target.value);
-    setSelectedChat(''); // Reset chat selection when changing course
-  };
+  useEffect(() => {
+    axios.get('http://localhost:5000/fetch_chats') // Adjust the URL as needed
+      .then(response => {
+        setChats(response.data.chats); // Assuming the response has a chats field
+      })
+      .catch(error => console.error("Error fetching chats:", error));
+  }, []);
 
   const handleChatChange = (event) => {
     setSelectedChat(event.target.value);
@@ -45,7 +42,10 @@ const ChatFeedback = () => {
 
   const handleSubmit = () => {
     // Logic to submit the feedback
-    console.log('Feedback submitted for', selectedCourse, selectedChat, feedback);
+    console.log('Feedback submitted for chat', selectedChat, ':', feedback);
+    alert('Feedback submitted. Thank you!')
+    setFeedback('');
+    setSelectedChat('');
   };
 
   return (
@@ -82,37 +82,23 @@ const ChatFeedback = () => {
       <div className="chat-feedback-container">
         <h1>Chat Feedback</h1>
         <label>
-          Select Course:
-          <select value={selectedCourse} onChange={handleCourseChange}>
-            <option value="">Select a course</option>
-            {Object.keys(coursesAndChats).map(course => (
-              <option key={course} value={course}>{course}</option>
+          Select Chat:
+          <select value={selectedChat} onChange={(e) => setSelectedChat(e.target.value)}>
+            <option value="">Select a chat</option>
+            {chats.map((chat, index) => (
+              <option key={index} value={chat.chatID}>{chat.title}</option>
             ))}
           </select>
         </label>
-
-        {selectedCourse && (
-          <label>
-            Select Chat:
-            <select value={selectedChat} onChange={handleChatChange}>
-              <option value="">Select a chat</option>
-              {coursesAndChats[selectedCourse].map(chat => (
-                <option key={chat} value={chat}>{chat}</option>
-              ))}
-            </select>
-          </label>
-        )}
-
         {selectedChat && (
           <div>
             <label>
               Feedback:
-              <textarea value={feedback} onChange={handleFeedbackChange} />
+              <textarea value={feedback} onChange={(e) => setFeedback(e.target.value)} />
             </label>
+            <button onClick={handleSubmit}>Submit Feedback</button>
           </div>
         )}
-
-        <button onClick={handleSubmit}>Submit Feedback</button>
       </div>
     </div>
   );
