@@ -4,90 +4,31 @@ import '../styles.css';
 
 // Assuming a Modal component for course selection (you might need to implement this based on your UI framework)
 // This is a placeholder and should be replaced with your actual modal implementation
-const CourseSelectionModal = ({ isVisible, onClose, onCourseSelected }) => {
-  // Placeholder for courses fetching
-  const courses = [{ code: 'CS101', name: 'Introduction to Computer Science' }, { code: 'CS102', name: 'Data Structures' }];
-  
+const CourseSelectionModal = ({ isVisible, onClose, onFilesUpload, courses, selectedFiles }) => {
+  const [selectedCourse, setSelectedCourse] = useState('');
+
+  const handleUpload = () => {
+    onFilesUpload(selectedCourse, selectedFiles);
+    onClose(); // Close modal after upload
+  };
+
   return isVisible ? (
     <div className="modal">
-      <h2>Select a Course</h2>
-      <select onChange={(e) => onCourseSelected(e.target.value)}>
+      <h2>Upload Files</h2>
+      <select onChange={(e) => setSelectedCourse(e.target.value)}>
+        <option value="">Select a course</option>
         {courses.map(course => <option key={course.code} value={course.code}>{course.name}</option>)}
       </select>
+      {selectedFiles.length > 0 && (
+        <div>
+          <h3>Files to upload:</h3>
+          <ul>{Array.from(selectedFiles).map((file, index) => <li key={index}>{file.name}</li>)}</ul>
+        </div>
+      )}
+      <button onClick={handleUpload}>Upload</button>
       <button onClick={onClose}>Close</button>
     </div>
   ) : null;
-};
-
-// Sidebar component to display chat history
-const Sidebar = ({ chats, onSelectChat, onNewChat }) => {
-  // The modal/popup can be implemented using a simple state to control visibility
-  const [uploadModalVisible, setUploadModalVisible] = useState(false);
-
-  const openUploadModal = () => setUploadModalVisible(true);
-  const closeUploadModal = () => setUploadModalVisible(false);
-
-  const handleCourseSelected = (courseCode) => {
-    // Here, implement the logic to fetch files for the selected course and upload them to OpenAI
-    console.log('Selected course:', courseCode);
-    // Close modal after selection
-    closeUploadModal();
-  };
-
-  return (
-    <div className="sidebar">
-      <div className="chat-history">
-        <div className="chat-history-text">Chat history</div>
-        <button className="new-chat-button" onClick={onNewChat}>+</button>
-      </div>
-      {chats.map((chat, index) => (
-        <div key={index} className="chat-preview" onClick={() => onSelectChat(chat)}>
-          Chat {chat.id}
-        </div>
-      ))}
-      <button className="upload-files-button" onClick={openUploadModal}>Upload Files</button>
-      <CourseSelectionModal 
-        isVisible={uploadModalVisible} 
-        onClose={closeUploadModal} 
-        onCourseSelected={handleCourseSelected} 
-      />
-    </div>
-  );
-};
-
-// Chat window component to display current chat
-const ChatWindow = ({ currentChat, onSendMessage }) => {
-  const [input, setInput] = useState('');
-
-  const handleSend = () => {
-    if (input.trim()) {
-      onSendMessage(input); // Pass the input state to onSendMessage
-      setInput('');
-    }
-  };
-
-  return (
-    <div className="chat-window">
-      <div className="messages">
-        {currentChat.messages.map((message, index) => (
-          <div key={index} className={`message ${message.sender}`}>
-            {message.text}
-          </div>
-        ))}
-      </div>
-      <div className="footer">
-        <div className="input-area">
-          <input
-            type="text"
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyPress={(e) => e.key === 'Enter' && handleSend()}
-          />
-          <button onClick={handleSend}>Send</button>
-        </div>
-      </div>
-    </div>
-  );
 };
 
 // Main component
@@ -96,6 +37,64 @@ const LiveTA = () => {
   const [currentChat, setCurrentChat] = useState(chats[0]);
   const [input, setInput] = useState('');
   const messagesEndRef = useRef(null);
+  const fileInputRef = useRef(null);
+
+  const [selectedFiles, setSelectedFiles] = useState([]);
+  const [uploadModalVisible, setUploadModalVisible] = useState(false);
+  const courses = [{ code: 'CS101', name: 'Introduction to Computer Science' }, { code: 'CS102', name: 'Data Structures' }];
+
+  const openUploadModal = () => setUploadModalVisible(true);
+  const closeUploadModal = () => setUploadModalVisible(false);
+
+  // Function to upload selected files to the OpenAI API
+  const handleFilesUpload = async (courseCode, files) => {
+    const formData = new FormData();
+    formData.append('courseCode', courseCode); // Append course code to the form data
+    Array.from(files).forEach(file => { // Append each file to the form data
+      formData.append('file', file);
+    });
+    try {
+      const response = await axios.post('http://localhost:5000/chatbot-upload', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      });
+      console.log('Files uploaded and processed by chatbot:', response.data.responses);
+
+      const botMessage = { sender: 'bot', text: response.data.response };
+      addMessageToChat(botMessage);
+      
+    } catch (error) {
+      console.error('Error uploading files to chatbot:', error);
+    }
+  };
+
+  const handleFileChange = (event) => {
+    setSelectedFiles(event.target.files);
+    openUploadModal(); // Open modal after files are selected
+  };
+
+  const handleDrop = (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    setSelectedFiles(event.dataTransfer.files);
+    openUploadModal(); // Open modal after files are dropped
+  };
+
+  const handleDragOver = (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+  };
+
+  useEffect(() => {
+    const chatWindow = document.querySelector('.chat-window');
+    chatWindow.addEventListener('dragover', handleDragOver);
+    chatWindow.addEventListener('drop', handleDrop);
+    return () => {
+      chatWindow.removeEventListener('dragover', handleDragOver);
+      chatWindow.removeEventListener('drop', handleDrop);
+    };
+  }, []);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -147,6 +146,23 @@ const LiveTA = () => {
     <div className="live-ta">
       {/* Sidebar to display chat history */}
       <div className="sidebar">
+      {/* UPLOAD FILES BUTTON AND LOGIC */}
+      <button className="upload-files-button" onClick={() => fileInputRef.current.click()}>Upload Files</button>
+      <input
+          ref={fileInputRef}
+          type="file"
+          multiple
+          onChange={handleFileChange}
+          style={{ display: 'none' }}
+        />
+        <CourseSelectionModal
+          isVisible={uploadModalVisible}
+          onClose={closeUploadModal}
+          onFilesUpload={handleFilesUpload}
+          courses={courses}
+          selectedFiles={selectedFiles}
+        />
+        
         <div className="chat-history">
           <div className="chat-history-text">Chat history</div>
           <button className="new-chat-button" onClick={handleCreateNewChat}>+</button>

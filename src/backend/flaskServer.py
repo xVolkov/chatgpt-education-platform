@@ -10,11 +10,17 @@ from bson.binary import Binary
 from werkzeug.utils import secure_filename
 import os
 import io
+# File Processing
+import magic
+from PyPDF2 import PdfReader
+from docx import Document
+from PIL import Image
+import pytesseract
 
 app = Flask(__name__)
 CORS(app)
 
-client = OpenAI(api_key="")
+client = OpenAI(api_key="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")
 
 mongo_client = MongoClient('mongodb://localhost:27017/')
 db = mongo_client['capstone']
@@ -31,6 +37,21 @@ def hash_password(password):
 def verify_password(stored_password, provided_password):
     password, salt = stored_password.split(':')
     return password == hashlib.sha256(salt.encode() + provided_password.encode()).hexdigest()
+
+def extract_text_from_pdf(file):
+    reader = PdfReader(file)
+    text = ''
+    for page in reader.pages:
+        text += page.extract_text()
+    return text
+
+def extract_text_from_docx(file):
+    doc = Document(file)
+    return "\n".join([paragraph.text for paragraph in doc.paragraphs])
+
+def extract_text_from_image(file):
+    image = Image.open(file)
+    return pytesseract.image_to_string(image)
 
 @app.route('/register', methods=['POST'])
 def register_user():
@@ -223,6 +244,38 @@ def chat_with_bot():
         print('DEBUG')
         bot_response = response.choices[0].message.content
         print(bot_response)
+        return jsonify({'response': bot_response})
+    
+    except Exception as e:
+        print(e)
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/chatbot-upload', methods=['POST'])
+def handle_file_upload():
+    file = request.files['file']
+    file_type = magic.from_buffer(file.read(2048), mime=True)
+    file.seek(0)  # Reset file pointer to the beginning
+
+    if 'pdf' in file_type:
+        text = extract_text_from_pdf(file)
+    elif 'wordprocessingml.document' in file_type:
+        text = extract_text_from_docx(file)
+    elif 'image' in file_type:
+        text = extract_text_from_image(file)
+    elif 'text/plain' in file_type:
+        text = file.read().decode('utf-8')  # Assuming UTF-8 encoding for text files
+    else:
+        # Handle other file types or throw an error
+        return jsonify({'error': 'Unsupported file type'}), 400
+
+    try:
+        response = client.chat.completions.create(
+            messages=[
+                {"role": "user", "content": text}
+            ],
+            model="gpt-3.5-turbo"
+        )
+        bot_response = response.choices[0].message.content
         return jsonify({'response': bot_response})
     
     except Exception as e:
