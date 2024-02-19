@@ -1,9 +1,11 @@
 from bson import json_util
 from flask import Flask, request, jsonify, send_file
+from flask.cli import load_dotenv
 from flask_cors import CORS
 import hashlib
 import uuid
 from openai import OpenAI
+import openai
 from pymongo import MongoClient
 from bson.objectid import ObjectId
 from bson.binary import Binary
@@ -16,11 +18,12 @@ from PyPDF2 import PdfReader
 from docx import Document
 from PIL import Image
 import pytesseract
+from openai import OpenAI
 
 app = Flask(__name__)
 CORS(app)
 
-client = OpenAI(api_key="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")
+OpenAI_KEY = OpenAI(api_key="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")
 
 mongo_client = MongoClient('mongodb://localhost:27017/')
 db = mongo_client['capstone']
@@ -52,6 +55,42 @@ def extract_text_from_docx(file):
 def extract_text_from_image(file):
     image = Image.open(file)
     return pytesseract.image_to_string(image)
+
+# OpenAI GPT Assistant Section
+def create_assistant():
+    client = OpenAI()
+    my_assistant = client.beta.assistants.create(
+        instructions="You're an AI teacher assistant, helping university professors and university students with their needs.",
+        name="AI Teacher Assistant",
+        tools=[{"type": "retrieval"}],
+        model="gpt-4-1106-preview",
+    )
+    print(my_assistant)
+    
+def create_assistant_file():
+    client = OpenAI()
+    
+    # Opening a file
+    fileName = input("Type the file name")
+    file = client.files.create(
+        file=open(f"../uploads/{fileName}", "rb"),
+        purpose="assistants"
+    )
+    
+    assistant_file = client.beta.assistants.files.create(
+        file = file,
+        assistant_id="liveTA",
+        file_id="file-abc123"
+    )
+    print(assistant_file)
+    
+def list_assistants():
+    client = OpenAI()
+    my_assistants = client.beta.assistants.list(
+        order="desc",
+        limit="20",
+    )
+    print(my_assistants.data)
 
 @app.route('/register', methods=['POST'])
 def register_user():

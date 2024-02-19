@@ -13,6 +13,7 @@ import ModifyCourse from './ModifyCourses';
 import GenerateContent from './GenerateContent';
 import UploadFiles from './UploadFiles';
 import LiveTA from './LiveTA';
+import LiveTAgpt from './LiveTAgpt';
 
 function Rectangle({ children, buttons }) {
 
@@ -42,7 +43,7 @@ function App() {
   ];
 
   const chatButtons = [
-    { text: "Talk to LiveTA", path: "/live-ta", className: "RectangleButton" },
+    { text: "Talk to LiveTA", path: "/live-ta-gpt", className: "RectangleButton" },
     { text: "Chat Feedback", path: "/chat-feedback", className: "RectangleButton" } // TO-DO: add a chat-feedback page
   ];
 
@@ -122,6 +123,7 @@ function App() {
           <Route path="/generate-content" element={<GenerateContent />} />
           <Route path="/upload-files" element={<UploadFiles />} />
           <Route path="/live-ta" element={<LiveTA />} />
+          <Route path="/live-ta-gpt" element={<LiveTAgpt />} />
           {/* Add Route for ModifyCourse if it exists */}
       </Routes>
 

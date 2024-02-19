@@ -13,6 +13,13 @@ const GenerateContent = () => {
   const [contentType, setContentType] = useState('');
   const [contentComplexity, setContentComplexity] = useState('');
 
+  const OpenAI = require("openai"); // OPENAI module
+  // Create a OpenAI connection
+  const secretKey = process.env.OPENAI_API_KEY;
+  const openai = new OpenAI({
+    apiKey: secretKey,
+  });
+
   const handleGenerate = () => {
     // Logic to generate and download content
   };

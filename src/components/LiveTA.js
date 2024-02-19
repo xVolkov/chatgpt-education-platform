@@ -2,35 +2,6 @@ import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import '../styles.css';
 
-// Assuming a Modal component for course selection (you might need to implement this based on your UI framework)
-// This is a placeholder and should be replaced with your actual modal implementation
-const CourseSelectionModal = ({ isVisible, onClose, onFilesUpload, courses, selectedFiles }) => {
-  const [selectedCourse, setSelectedCourse] = useState('');
-
-  const handleUpload = () => {
-    onFilesUpload(selectedCourse, selectedFiles);
-    onClose(); // Close modal after upload
-  };
-
-  return isVisible ? (
-    <div className="modal">
-      <h2>Upload Files</h2>
-      <select onChange={(e) => setSelectedCourse(e.target.value)}>
-        <option value="">Select a course</option>
-        {courses.map(course => <option key={course.code} value={course.code}>{course.name}</option>)}
-      </select>
-      {selectedFiles.length > 0 && (
-        <div>
-          <h3>Files to upload:</h3>
-          <ul>{Array.from(selectedFiles).map((file, index) => <li key={index}>{file.name}</li>)}</ul>
-        </div>
-      )}
-      <button onClick={handleUpload}>Upload</button>
-      <button onClick={onClose}>Close</button>
-    </div>
-  ) : null;
-};
-
 // Main component
 const LiveTA = () => {
   const [chats, setChats] = useState([{ id: 'default', messages: [] }, ]);
@@ -146,22 +117,6 @@ const LiveTA = () => {
     <div className="live-ta">
       {/* Sidebar to display chat history */}
       <div className="sidebar">
-      {/* UPLOAD FILES BUTTON AND LOGIC */}
-      <button className="upload-files-button" onClick={() => fileInputRef.current.click()}>Upload Files</button>
-      <input
-          ref={fileInputRef}
-          type="file"
-          multiple
-          onChange={handleFileChange}
-          style={{ display: 'none' }}
-        />
-        <CourseSelectionModal
-          isVisible={uploadModalVisible}
-          onClose={closeUploadModal}
-          onFilesUpload={handleFilesUpload}
-          courses={courses}
-          selectedFiles={selectedFiles}
-        />
         
         <div className="chat-history">
           <div className="chat-history-text">Chat history</div>
