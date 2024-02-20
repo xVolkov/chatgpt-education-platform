@@ -56,42 +56,6 @@ def extract_text_from_image(file):
     image = Image.open(file)
     return pytesseract.image_to_string(image)
 
-# OpenAI GPT Assistant Section
-def create_assistant():
-    client = OpenAI()
-    my_assistant = client.beta.assistants.create(
-        instructions="You're an AI teacher assistant, helping university professors and university students with their needs.",
-        name="AI Teacher Assistant",
-        tools=[{"type": "retrieval"}],
-        model="gpt-4-1106-preview",
-    )
-    print(my_assistant)
-    
-def create_assistant_file():
-    client = OpenAI()
-    
-    # Opening a file
-    fileName = input("Type the file name")
-    file = client.files.create(
-        file=open(f"../uploads/{fileName}", "rb"),
-        purpose="assistants"
-    )
-    
-    assistant_file = client.beta.assistants.files.create(
-        file = file,
-        assistant_id="liveTA",
-        file_id="file-abc123"
-    )
-    print(assistant_file)
-    
-def list_assistants():
-    client = OpenAI()
-    my_assistants = client.beta.assistants.list(
-        order="desc",
-        limit="20",
-    )
-    print(my_assistants.data)
-
 @app.route('/register', methods=['POST'])
 def register_user():
     user_data = request.json
@@ -264,62 +228,6 @@ def download_file():
             download_name=file_name
         )
     return jsonify({"message": "File not found"}), 404
-
-@app.route('/chat-with-bot', methods=['POST'])
-def chat_with_bot():
-    data = request.json
-    print(data)
-    user_message = data['input']
-    try:
-        response = client.chat.completions.create(
-            messages=[
-                {
-                    "role":"user",
-                    "content":user_message
-                }
-            ],
-            model = "gpt-3.5-turbo"
-        )
-        print('DEBUG')
-        bot_response = response.choices[0].message.content
-        print(bot_response)
-        return jsonify({'response': bot_response})
-    
-    except Exception as e:
-        print(e)
-        return jsonify({'error': str(e)}), 500
-
-@app.route('/chatbot-upload', methods=['POST'])
-def handle_file_upload():
-    file = request.files['file']
-    file_type = magic.from_buffer(file.read(2048), mime=True)
-    file.seek(0)  # Reset file pointer to the beginning
-
-    if 'pdf' in file_type:
-        text = extract_text_from_pdf(file)
-    elif 'wordprocessingml.document' in file_type:
-        text = extract_text_from_docx(file)
-    elif 'image' in file_type:
-        text = extract_text_from_image(file)
-    elif 'text/plain' in file_type:
-        text = file.read().decode('utf-8')  # Assuming UTF-8 encoding for text files
-    else:
-        # Handle other file types or throw an error
-        return jsonify({'error': 'Unsupported file type'}), 400
-
-    try:
-        response = client.chat.completions.create(
-            messages=[
-                {"role": "user", "content": text}
-            ],
-            model="gpt-3.5-turbo"
-        )
-        bot_response = response.choices[0].message.content
-        return jsonify({'response': bot_response})
-    
-    except Exception as e:
-        print(e)
-        return jsonify({'error': str(e)}), 500
 
 @app.route('/fetch_chats', methods=['GET'])
 def fetch_chats():

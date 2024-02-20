@@ -20,7 +20,7 @@ import LiveTA from './components/LiveTA';
 import ChatFeedback from './components/ChatFeedback';
 import ContactSupport from './components/ContactSupport';
 import FAQs from './components/FAQs';
-import LiveTAgpt from './components/LiveTAgpt';
+import LiveAssistant from './components/LiveAssistant';
 
 // Upload Files to GPT - GptAssistant.js
 //import GptAssistant from './components/GptAssistant';
@@ -45,11 +45,11 @@ const App = () => {
         <Route path="/generate-content" element={<GenerateContent />} />
         <Route path="/upload-files" element={<UploadFiles />} />
         <Route path="/live-ta" element={<LiveTA />} />
-        <Route path="/live-ta-gpt" element={<LiveTAgpt />} />
         <Route path="/chat-feedback" element={<ChatFeedback />} />
         <Route path="/contact-support" element={<ContactSupport />} />
         <Route path="/faqs" element={<FAQs />} />
         <Route path="/home-student" element={<HomeStudent />} />
+        <Route path="/live-assistant" element={<LiveAssistant />} />
         {/* Other routes can be added here */}
       </Routes>
     </Router>
