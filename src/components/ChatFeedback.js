@@ -13,6 +13,24 @@ const ChatFeedback = () => {
   const [selectedChat, setSelectedChat] = useState('');
   const [feedback, setFeedback] = useState('');
   const [chats, setChats] = useState([]); // State to hold chats fetched from the server
+  const [teacherName, setTeacherName] = useState('Teacher_Name!'); // State for teacher's name
+
+  // ######################### FETCHING USER'S FIRSTNAME FROM MONGO-DB #########################
+  useEffect(() => {
+    // Fetch the teacher's name when the component mounts
+    const userID = sessionStorage.getItem('userID');
+    if (userID) {
+      // Adjust the URL to your actual endpoint
+      fetch(`http://localhost:5000/user/${userID}`)
+        .then(response => response.json())
+        .then(data => {
+          if (data.firstName) {
+            setTeacherName(`Hi ${data.firstName}!`);
+          }
+        })
+        .catch(err => console.error('Error fetching teacher name:', err));
+    }
+  }, []);
 
   useEffect(() => {
     axios.get('http://localhost:5000/fetch_chats') // Adjust the URL as needed
@@ -57,7 +75,7 @@ const ChatFeedback = () => {
         </div>
         <div className="AppHeaderRight">
           <img src={profile} alt="profile" className="ProfileIcon" />
-          <p className="HiTeacherText">Hi Teacher_Name!</p>
+          <p className="HiTeacherText">{teacherName}</p>
           <div className="settings-section">
             <img
               src={settings}

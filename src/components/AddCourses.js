@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import logo from './assets/logo.png';
 import settings from './assets/settings.png';
@@ -21,6 +21,25 @@ const AddCourses = () => {
 
   const [showDropdown, setShowDropdown] = useState(false); // State to control the dropdown visibility
   const [serverResponse, setServerResponse] = useState(''); // Displays python flask server response
+  const [teacherName, setTeacherName] = useState('Teacher_Name!'); // State for teacher's name
+
+  // ######################### FETCHING USER'S FIRSTNAME FROM MONGO-DB #########################
+  useEffect(() => {
+    // Fetch the teacher's name when the component mounts
+    const userID = sessionStorage.getItem('userID');
+    if (userID) {
+      // Adjust the URL to your actual endpoint
+      fetch(`http://localhost:5000/user/${userID}`)
+        .then(response => response.json())
+        .then(data => {
+          if (data.firstName) {
+            setTeacherName(`Hi ${data.firstName}!`);
+          }
+        })
+        .catch(err => console.error('Error fetching teacher name:', err));
+    }
+  }, []);
+
   const navigate = useNavigate(); // Hook for navigation
 
   const handleHomeClick = () => {
@@ -129,7 +148,7 @@ const AddCourses = () => {
         </div>
         <div className="AppHeaderRight">
           <img src={profile} alt="profile" className="ProfileIcon" />
-          <p className="HiTeacherText">Hi Teacher_Name!</p>
+          <p className="HiTeacherText">{teacherName}</p>
           <div className="settings-section">
             <img
               src={settings}

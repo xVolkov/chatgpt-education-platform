@@ -15,6 +15,24 @@ const ModifyCourses = () => {
   const [selectedCourseCode, setSelectedCourseCode] = useState('');
   const [courseDetails, setCourseDetails] = useState({});
   const [courseFiles, setCourseFiles] = useState([]);
+  const [teacherName, setTeacherName] = useState('Teacher_Name!'); // State for teacher's name
+  
+  // ######################### FETCHING USER'S FIRSTNAME FROM MONGO-DB #########################
+  useEffect(() => {
+    // Fetch the teacher's name when the component mounts
+    const userID = sessionStorage.getItem('userID');
+    if (userID) {
+      // Adjust the URL to your actual endpoint
+      fetch(`http://localhost:5000/user/${userID}`)
+        .then(response => response.json())
+        .then(data => {
+          if (data.firstName) {
+            setTeacherName(`Hi ${data.firstName}!`);
+          }
+        })
+        .catch(err => console.error('Error fetching teacher name:', err));
+    }
+  }, []);
   
   // Fetch course codes from the server
   useEffect(() => {
@@ -133,7 +151,7 @@ const ModifyCourses = () => {
         </div>
         <div className="AppHeaderRight">
           <img src={profile} alt="profile" className="ProfileIcon" />
-          <p className="HiTeacherText">Hi Teacher_Name!</p>
+          <p className="HiTeacherText">{teacherName}</p>
           <div className="settings-section">
             <img
               src={settings}

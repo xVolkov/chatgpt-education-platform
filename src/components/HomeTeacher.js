@@ -9,11 +9,11 @@ import logo from './assets/logo.png';
 import home from './assets/home.png';
 
 import AddCourses from './AddCourses';
-import ModifyCourse from './ModifyCourses';
-import GenerateContent from './GenerateContent';
+import ModifyCourses from './ModifyCourses';
 import UploadFiles from './UploadFiles';
 import LiveTA from './LiveTA';
 import LiveAssistant from './LiveAssistant';
+import TrainLiveTA from './TrainLiveTA';
 
 function Rectangle({ children, buttons }) {
 
@@ -37,8 +37,8 @@ function App() {
 
   const courseButtons = [
     { text: "Add a Course", path: "/add-courses", className: "RectangleButton" },
-    { text: "Modfiy a Course", path: "/modify-course", className: "RectangleButton" }, // TO-DO: add a modify-courses page
-    { text: "Generate Content", path: "/generate-content", className: "RectangleButton"},
+    { text: "Modfiy a Course", path: "/modify-courses", className: "RectangleButton" }, // TO-DO: add a modify-courses page
+    { text: "Train LiveTA", path: "/train-ta", className: "RectangleButton"},
     { text: "Upload Files", path: "/upload-files", className: "RectangleButton" }
   ];
 
@@ -120,11 +120,11 @@ function App() {
 
       <Routes>
           <Route path="/add-courses" element={<AddCourses />} />
-          <Route path="/generate-content" element={<GenerateContent />} />
+          <Route path="/train-ta" element={<TrainLiveTA />} />
           <Route path="/upload-files" element={<UploadFiles />} />
           <Route path="/live-ta" element={<LiveTA />} />
           <Route path="/live-assistant" element={<LiveAssistant />} />
-          {/* Add Route for ModifyCourse if it exists */}
+          <Route path="/modify-courses" element={<ModifyCourses />} />
       </Routes>
 
       <Rectangle buttons={chatButtons}>

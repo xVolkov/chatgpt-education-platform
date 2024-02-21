@@ -13,7 +13,7 @@ import RegistrationConfirmation from './components/RegisterConfirmation';
 // Teacher Home Page:
 import HomeTeacher from './components/HomeTeacher';
 import AddCourses from './components/AddCourses';
-import ModifyCourse from './components/ModifyCourses';
+import ModifyCourses from './components/ModifyCourses';
 import GenerateContent from './components/GenerateContent';
 import UploadFiles from './components/UploadFiles';
 import LiveTA from './components/LiveTA';
@@ -21,6 +21,7 @@ import ChatFeedback from './components/ChatFeedback';
 import ContactSupport from './components/ContactSupport';
 import FAQs from './components/FAQs';
 import LiveAssistant from './components/LiveAssistant';
+import TrainLiveTA from './components/TrainLiveTA';
 
 // Upload Files to GPT - GptAssistant.js
 //import GptAssistant from './components/GptAssistant';
@@ -41,7 +42,7 @@ const App = () => {
         <Route path="/forgot-password" element={<ForgotPassword/>} />
         <Route path="/home-teacher" element={<HomeTeacher />} />
         <Route path="/add-courses" element={<AddCourses />} />
-        <Route path="/modify-course" element={<ModifyCourse />} />
+        <Route path="/modify-courses" element={<ModifyCourses />} />
         <Route path="/generate-content" element={<GenerateContent />} />
         <Route path="/upload-files" element={<UploadFiles />} />
         <Route path="/live-ta" element={<LiveTA />} />
@@ -50,6 +51,7 @@ const App = () => {
         <Route path="/faqs" element={<FAQs />} />
         <Route path="/home-student" element={<HomeStudent />} />
         <Route path="/live-assistant" element={<LiveAssistant />} />
+        <Route path="/train-ta" element={<TrainLiveTA />} />
         {/* Other routes can be added here */}
       </Routes>
     </Router>
