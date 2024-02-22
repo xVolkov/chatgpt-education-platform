@@ -11,7 +11,6 @@ import home from './assets/home.png';
 import AddCourses from './AddCourses';
 import ModifyCourses from './ModifyCourses';
 import UploadFiles from './UploadFiles';
-import LiveTA from './LiveTA';
 import LiveAssistant from './LiveAssistant';
 import TrainLiveTA from './TrainLiveTA';
 
@@ -122,7 +121,6 @@ function App() {
           <Route path="/add-courses" element={<AddCourses />} />
           <Route path="/train-ta" element={<TrainLiveTA />} />
           <Route path="/upload-files" element={<UploadFiles />} />
-          <Route path="/live-ta" element={<LiveTA />} />
           <Route path="/live-assistant" element={<LiveAssistant />} />
           <Route path="/modify-courses" element={<ModifyCourses />} />
       </Routes>

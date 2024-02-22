@@ -16,7 +16,6 @@ import AddCourses from './components/AddCourses';
 import ModifyCourses from './components/ModifyCourses';
 import GenerateContent from './components/GenerateContent';
 import UploadFiles from './components/UploadFiles';
-import LiveTA from './components/LiveTA';
 import ChatFeedback from './components/ChatFeedback';
 import ContactSupport from './components/ContactSupport';
 import FAQs from './components/FAQs';
@@ -45,7 +44,6 @@ const App = () => {
         <Route path="/modify-courses" element={<ModifyCourses />} />
         <Route path="/generate-content" element={<GenerateContent />} />
         <Route path="/upload-files" element={<UploadFiles />} />
-        <Route path="/live-ta" element={<LiveTA />} />
         <Route path="/chat-feedback" element={<ChatFeedback />} />
         <Route path="/contact-support" element={<ContactSupport />} />
         <Route path="/faqs" element={<FAQs />} />

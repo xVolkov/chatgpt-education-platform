@@ -130,6 +130,14 @@ def get_course_codes():
     course_codes = [course['courseCode'] for course in courses]
     return jsonify({"courseCodes": course_codes}), 200
 
+@app.route('/get-all-course-codes', methods=['GET'])
+def get_all_course_codes():
+    # Fetch all documents but only include the 'courseCode' field in the results
+    courses = courses_collection.find({}, {"courseCode": 1, "_id": 0})
+    course_codes = [course['courseCode'] for course in courses]
+    return jsonify({"courseCodes": course_codes}), 200
+
+
 @app.route('/get-course-details', methods=['GET'])
 def get_course_details():
     course_code = request.args.get('code')

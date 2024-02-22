@@ -8,7 +8,7 @@ import profile from './assets/profile.png';
 import logo from './assets/logo.png';
 import home from './assets/home.png';
 
-import LiveTA from './LiveTA';
+import LiveAssistant from './LiveAssistant';
 import ChatFeedback from './ChatFeedback';
 import ContactSupport from './ContactSupport';
 
@@ -33,7 +33,7 @@ function Rectangle({ children, buttons }) {
 function App() {
 
   const course = [
-    { text: "LiveTA", path:"/live-ta", className: "RectangleButton" },
+    { text: "LiveTA", path:"/live-assistant", className: "RectangleButton" },
     { text: "Chat Feedback", path: "/chat-feedback", className: "RectangleButton" }, 
   ];
 
@@ -111,7 +111,7 @@ function App() {
 
       <Routes>
           <Route path="/chat-feedback" element={<ChatFeedback />} />
-          <Route path="/live-ta" element={<LiveTA />} />
+          <Route path="/live-assistant" element={<LiveAssistant />} />
       </Routes>
 
       <Rectangle buttons={course}>

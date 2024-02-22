@@ -53,8 +53,39 @@ app.post('/upload-file', (req, res) => {
 });
 
 // #########################################################################################################
-// <<<< MAIN WebSocket LOGIC TO ASK ASSISTANT/UPLOAD FILES TO ASSISTANT >>>>
+// <<<< RECEIVES SELECTED COURSE CODE BY USER >>>>
 // #########################################################################################################
+let selectedCourseCode = ''; // stores user selected course code
+
+app.post('/selected-course', (req, res) => {
+  console.log('Received: ', req.body);
+  if (req === null) {
+    return res.status(400).send('No message received.');
+  }
+  selectedCourseCode = req.body.selectedCourseCodeTemp;
+    console.log(`You are inquiring about course code: ${selectedCourseCode}. Processing your request..`);
+    res.send(`Received course code: ${selectedCourseCode}`)
+  });
+
+  // #########################################################################################################
+  // <<<< RECEIVES USER ID >>>>
+  // #########################################################################################################
+  let theUserID = ''; // stores user selected course code
+
+  app.post('/user-id', (req, res) => {
+    console.log('Received: ', req.body);
+    if (req === null) {
+      return res.status(400).send('No message received.');
+    }
+    theUserID = req.body.userID;
+      console.log(`Received user ID: ${theUserID}. Processing your request..`);
+      res.send(`Received user ID: ${theUserID}`)
+    });
+
+// #########################################################################################################
+// <<<< MAIN WEB-SOCKET LOGIC TO ASK ASSISTANT/UPLOAD FILES TO ASSISTANT >>>>
+// #########################################################################################################
+
 wss.on('connection', function connection(ws) {
   ws.on('message', async function incoming(message) {
     console.log('received: %s', message);
@@ -62,7 +93,7 @@ wss.on('connection', function connection(ws) {
     try {
         let assistantId;
         let assistantDetails;
-        const assistantFilePath = "../backend/assistant.json";
+        const assistantFilePath = `../assistants/assistant-${selectedCourseCode}-${theUserID}}.json`;
 
     try { // Check if the assistant.json file exists
       const assistantData = await fsPromises.readFile(
@@ -72,16 +103,16 @@ wss.on('connection', function connection(ws) {
       assistantDetails = JSON.parse(assistantData);
       assistantId = assistantDetails.assistantId;
       console.log("\nExisting assistant detected.\n");
-      ws.send(JSON.stringify({ message: "LiveTA is typing..\n" }));
+      ws.send(JSON.stringify({ message: "LiveTA is processing your request..\n" }));
 
     } catch (error) {
       // If file does not exist or there is an error in reading it, create a new assistant
       console.log("No existing assistant detected, creating new.\n");
       //ws.send(JSON.stringify({ message: "No existing assistant detected, creating new.\n" }));
       const assistantConfig = {
-        name: "LiveTA",
+        name: `${selectedCourseCode}-LiveTA`,
         instructions:
-          "You're an AI teacher assistant, helping university professors with their needs.",
+          "You're an AI teacher assistant, helping university professors and students with their needs.",
         tools: [{ type: "retrieval" }], // configure the retrieval tool to retrieve files in the future
         model: "gpt-4-1106-preview",
       };
