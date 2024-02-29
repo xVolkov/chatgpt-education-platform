@@ -100,10 +100,12 @@ const ChatFeedback = () => {
           <p>SmartLearnAI</p>
         </div>
         <div className="AppHeaderRight">
+
           <button className="ProfileButton" onClick={handleProfileClick}>
             <img src={profile} alt="profile" className="ProfileIcon" />
           </button>
           <p className="HiStudentText">{teacherName}</p>
+
           <div className="settings-section">
             <img
               src={settings}

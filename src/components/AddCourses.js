@@ -151,9 +151,11 @@ const AddCourses = () => {
           <p>SmartLearnAI</p>
         </div>
         <div className="AppHeaderRight">
+          
           <button className="ProfileButton" onClick={handleProfileClick}>
             <img src={profile} alt="profile" className="ProfileIcon" />
           </button>
+
           <p className="HiTeacherText">{teacherName}</p>
           <div className="settings-section">
             <img

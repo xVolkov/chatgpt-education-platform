@@ -30,6 +30,7 @@ const LiveAssistant = () => {
   const [previewSelectedCourse, setPreviewSelectedCourse] = useState('');
   const [selectedFileName, setSelectedFileName] = useState('');
 
+
   const userType = sessionStorage.getItem('userType');
   const userID = sessionStorage.getItem('userID');
 
@@ -37,12 +38,13 @@ const LiveAssistant = () => {
   useEffect(() => {
     const websocket = new WebSocket('ws://localhost:3001');
     setWs(websocket);
-  
+
     websocket.onmessage = (event) => {
       const message = JSON.parse(event.data);
       const formattedMessage = `LiveTA: ${message.message}`;
       setResponse(formattedMessage); // Assuming the server sends back a JSON with a 'message' field
       logMessages(formattedMessage); // Log the formatted message
+
     };
     return () => {
       websocket.close();
@@ -120,6 +122,7 @@ const LiveAssistant = () => {
       };
     }
   }, [ws]);
+
   
   // ######################### HANDLES COURSE SELECTION CHANGE #########################
   const handleCourseChange = async (event) => {
@@ -198,6 +201,7 @@ const LiveAssistant = () => {
   }
   
   // #################### LOGS MESSAGES ####################
+
   const logMessages = (message, isAssistantMessage = false) => {
     const formattedMessage = isAssistantMessage ? `LiveTA: ${message}` : message;
     setChatLog(prevChatLog => [...prevChatLog, formattedMessage]);
@@ -225,13 +229,12 @@ const handleAskQuestion = async () => {
   }
 };
 
-  
 
   // #################### Handles Uploading Files to Assistant ####################
   const handleUploadToAssistant = (fileName) => {
     const act = "2";
     const question = "null";
-  
+
     if (ws) {
       ws.send(JSON.stringify({
         action: act,
@@ -239,11 +242,13 @@ const handleAskQuestion = async () => {
         userFile: fileName
       }));
     }
+
     logMessages(`You: Uploaded file: ${fileName}`); // Log the uploaded file message
     setSelectedFile(null);
     fileInputRef.current.value = '';
     // Reset selected file name
     setSelectedFileName('');
+
   };
 
   // #################### HANDLES THE FILE UPLOAD LOGIC ####################
@@ -271,6 +276,7 @@ const handleAskQuestion = async () => {
     const file = event.target.files[0];
     setSelectedFile(file);
     setSelectedFileName(file ? file.name : ''); // Update selected file name
+
   };
 
   const handleHomeClick = () => {

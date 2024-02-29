@@ -21,8 +21,8 @@ import ContactSupport from './components/ContactSupport';
 import FAQs from './components/FAQs';
 import LiveAssistant from './components/LiveAssistant';
 import TrainLiveTA from './components/TrainLiveTA';
-
 import UserProfile from './components/UserProfile';
+
 // Upload Files to GPT - GptAssistant.js
 //import GptAssistant from './components/GptAssistant';
 
@@ -56,6 +56,7 @@ const App = () => {
         <Route path="/train-ta" element={<TrainLiveTA />} />
         <Route path="/user-profile" element={<UserProfile />} />
         <Route path="/chat-feedback-student" element={<ChatFeedbackStudent />} />
+
         {/* Other routes can be added here */}
       </Routes>
     </Router>

@@ -104,6 +104,7 @@ const TrainLiveTA = () => {
     navigate('/user-profile');
   }; 
 
+
   const handleSignOut = () => {
     sessionStorage.clear(); // Clear the session storage
     alert('Logged-in User ID: ' + sessionStorage.getItem('userID')); // DEBUG - Confirms user signed out
@@ -185,9 +186,11 @@ const TrainLiveTA = () => {
           <p>SmartLearnAI</p>
         </div>
         <div className="AppHeaderRight">
+
           <button className="ProfileButton" onClick={handleProfileClick}>
             <img src={profile} alt="profile" className="ProfileIcon" />
           </button>
+
           <p className="HiTeacherText">{teacherName}</p>
           <div className="settings-section">
             <img
