@@ -1,0 +1,2 @@
+This is test2.txt.
+The OS password is 12345THYRS23456

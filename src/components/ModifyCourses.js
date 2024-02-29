@@ -5,6 +5,8 @@ import logo from './assets/logo.png';
 import settings from './assets/settings.png';
 import profile from './assets/profile.png';
 import home from './assets/home.png';
+import trash from './assets/delete.png';
+import download from './assets/download.png';
 import '../styles.css'; // Import the CSS file
 import { wait } from '@testing-library/user-event/dist/utils';
 
@@ -15,6 +17,24 @@ const ModifyCourses = () => {
   const [selectedCourseCode, setSelectedCourseCode] = useState('');
   const [courseDetails, setCourseDetails] = useState({});
   const [courseFiles, setCourseFiles] = useState([]);
+  const [teacherName, setTeacherName] = useState('Teacher_Name!'); // State for teacher's name
+  
+  // ######################### FETCHING USER'S FIRSTNAME FROM MONGO-DB #########################
+  useEffect(() => {
+    // Fetch the teacher's name when the component mounts
+    const userID = sessionStorage.getItem('userID');
+    if (userID) {
+      // Adjust the URL to your actual endpoint
+      fetch(`http://localhost:5000/user/${userID}`)
+        .then(response => response.json())
+        .then(data => {
+          if (data.firstName) {
+            setTeacherName(`Hi ${data.firstName}!`);
+          }
+        })
+        .catch(err => console.error('Error fetching teacher name:', err));
+    }
+  }, []);
   
   // Fetch course codes from the server
   useEffect(() => {
@@ -99,7 +119,11 @@ const ModifyCourses = () => {
 
   const handleHomeClick = () => {
     navigate('/home-teacher');
-  };  
+  };
+  
+  const handleProfileClick = () => {
+    navigate('/user-profile');
+  }; 
 
   const handleSignOut = () => {
     sessionStorage.clear(); // Clear the session storage
@@ -132,8 +156,10 @@ const ModifyCourses = () => {
           <p>SmartLearnAI</p>
         </div>
         <div className="AppHeaderRight">
-          <img src={profile} alt="profile" className="ProfileIcon" />
-          <p className="HiTeacherText">Hi Teacher_Name!</p>
+          <button className="ProfileButton" onClick={handleProfileClick}>
+            <img src={profile} alt="profile" className="ProfileIcon" />
+          </button>
+          <p className="HiTeacherText">{teacherName}</p>
           <div className="settings-section">
             <img
               src={settings}
@@ -189,8 +215,12 @@ const ModifyCourses = () => {
                 {courseFiles.map(file => (
                   <li key={file._id}>
                     {file.fileName} 
-                    <button onClick={() => deleteFile(file._id)}>Delete</button>
-                    <button onClick={() => downloadFile(file._id)}>Download</button>
+                    <button onClick={() => deleteFile(file._id)}>
+                      <img src={trash} alt="Delete" />
+                    </button>
+                    <button onClick={() => downloadFile(file._id)}>
+                      <img src={download} alt="Download" />
+                    </button>
                   </li>
                 ))}
               </ul>

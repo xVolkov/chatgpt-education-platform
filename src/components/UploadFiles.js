@@ -17,7 +17,25 @@ const UploadFiles = () => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [fileName, setFileName] = useState('');
   const fileInputRef = useRef(null); // Create a ref for the file input
+  const [teacherName, setTeacherName] = useState('Teacher_Name!'); // State for teacher's name
 
+  // ######################### FETCHING USER'S FIRSTNAME FROM MONGO-DB #########################
+  useEffect(() => {
+    // Fetch the teacher's name when the component mounts
+    const userID = sessionStorage.getItem('userID');
+    if (userID) {
+      // Adjust the URL to your actual endpoint
+      fetch(`http://localhost:5000/user/${userID}`)
+        .then(response => response.json())
+        .then(data => {
+          if (data.firstName) {
+            setTeacherName(`Hi ${data.firstName}!`);
+          }
+        })
+        .catch(err => console.error('Error fetching teacher name:', err));
+    }
+  }, []);
+  
   // Fetch course codes from the server
   useEffect(() => {
     const fetchCourseCodes = async () => {
@@ -47,9 +65,9 @@ const UploadFiles = () => {
     const file = event.target.files[0]; // Get the first file
     if (!file) return;
 
-    const validExtensions = [".pdf", ".pptx", ".docx"];
+    const validExtensions = [".pdf", ".pptx", ".docx", ".txt"];
     if (!validExtensions.includes(file.name.slice(-5)) && !validExtensions.includes(file.name.slice(-4))) {
-      alert("Please select only .pdf, .pptx, or .docx files.");
+      alert("Please select only .pdf, .txt, .pptx, or .docx files.");
       return;
     }
     
@@ -108,11 +126,15 @@ const UploadFiles = () => {
 
   const handleHomeClick = () => {
     navigate('/home-teacher');
-  };  
+  };
+  
+  const handleProfileClick = () => {
+    navigate('/user-profile');
+  }; 
 
   const handleSignOut = () => {
     sessionStorage.clear(); // Clear the session storage
-    alert('Logged-in User ID: ' + sessionStorage.getItem('userID'));
+    alert('Logged-in User ID: ' + sessionStorage.getItem('userID')); // DEBUG - Confirms user signed out
     navigate('/'); // Navigate to the login/register component
   };
 
@@ -124,8 +146,10 @@ const UploadFiles = () => {
           <p>SmartLearnAI</p>
         </div>
         <div className="AppHeaderRight">
-          <img src={profile} alt="profile" className="ProfileIcon" />
-          <p className="HiTeacherText">Hi Teacher_Name!</p>
+          <button className="ProfileButton" onClick={handleProfileClick}>
+            <img src={profile} alt="profile" className="ProfileIcon" />
+          </button>
+          <p className="HiTeacherText">{teacherName}</p>
           <div className="settings-section">
             <img
               src={settings}
