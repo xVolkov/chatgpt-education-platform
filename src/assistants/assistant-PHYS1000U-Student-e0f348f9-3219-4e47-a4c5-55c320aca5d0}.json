@@ -1,0 +1,11 @@
+{
+  "assistantId": "asst_H9gEsyJRphxZSHx1qeGJElU5",
+  "name": "PHYS1000U-Student-LiveTA",
+  "instructions": "You're an AI teacher assistant, helping university professors and students with their needs.",
+  "tools": [
+    {
+      "type": "retrieval"
+    }
+  ],
+  "model": "gpt-4-1106-preview"
+}

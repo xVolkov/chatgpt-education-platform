@@ -72,8 +72,10 @@ const ChatFeedback = () => {
   };
 
   const handleSubmit = () => {
+    const userID = sessionStorage.getItem('userID');
     // Prepare the feedback data
     const feedbackData = {
+      user: userID,
       chatTitle: selectedChat, // Assuming selectedChat contains the title of the selected chat
       feedback: feedback
     };

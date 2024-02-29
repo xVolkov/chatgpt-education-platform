@@ -64,7 +64,7 @@ const LiveAssistant = () => {
             setTeacherName(`Hi ${data.firstName}!`);
           }
         })
-        .catch(err => console.error('Error fetching teacher name:', err));
+        .catch(err => console.error('Error fetching user firstname:', err));
     }
   }, []);
 
@@ -167,7 +167,7 @@ const LiveAssistant = () => {
       });
 
       if (!response.ok) throw new Error('Connection to server failed');
-      alert(`Successfully sent ${userID} as the current user ID to the server`);
+      //alert(`Successfully sent ${userID} as the current user ID to the server`);
 
     } catch (error) {
       console.error('Error:', error);
@@ -290,7 +290,7 @@ const handleAskQuestion = async () => {
 
   const handleSignOut = () => {
     sessionStorage.clear(); // Clear the session storage
-    alert('Logged-in User ID: ' + sessionStorage.getItem('userID')); // DEBUG - Confirms user signed out
+    //alert('Logged-in User ID: ' + sessionStorage.getItem('userID')); // DEBUG - Confirms user signed out
     navigate('/'); // Navigate to the login/register component
   };
 

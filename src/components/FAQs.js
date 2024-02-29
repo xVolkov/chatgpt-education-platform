@@ -7,7 +7,7 @@ import home from './assets/home.png';
 import '../styles.css'; // Import the CSS file
 
 const faqs = [
-  { question: 'How do I reset my password?', answer: 'To reset your password, go to the settings page and click on "Reset Password".' },
+  { question: 'How do I access my profile settings?', answer: 'Click on the profile icon at the top right of the screen (beside your firstname) to access the profile settings.' },
   { question: 'Where can I find the latest updates?', answer: 'Latest updates can be found on the updates section of our homepage.' },
   { question: 'Can I modify my courses?', answer: 'Yes, you can do so by clicking on "Modify a Course" button on the homepage.' },
   // ... Add more FAQs here
