@@ -33,9 +33,18 @@ const ChatFeedback = () => {
   }, []);
 
   useEffect(() => {
-    axios.get('http://localhost:5000/fetch_chats') // Adjust the URL as needed
+    axios.get('http://localhost:5000/fetch_chats')
       .then(response => {
         setChats(response.data.chats); // Assuming the response has a chats field
+      })
+      .catch(error => console.error("Error fetching chats:", error));
+  }, []);
+
+  useEffect(() => {
+    axios.get('http://localhost:5000/fetch_chats')
+      .then(response => {
+        const filteredChats = response.data.chats.filter(chat => chat.userID === sessionStorage.getItem('userID'));
+        setChats(filteredChats);
       })
       .catch(error => console.error("Error fetching chats:", error));
   }, []);
@@ -50,7 +59,11 @@ const ChatFeedback = () => {
 
   const handleHomeClick = () => {
     navigate('/home-teacher');
-  };  
+  }; 
+  
+  const handleProfileClick = () => {
+    navigate('/user-profile');
+  }; 
 
   const handleSignOut = () => {
     sessionStorage.clear(); // Clear the session storage
@@ -59,11 +72,24 @@ const ChatFeedback = () => {
   };
 
   const handleSubmit = () => {
-    // Logic to submit the feedback
-    console.log('Feedback submitted for chat', selectedChat, ':', feedback);
-    alert('Feedback submitted. Thank you!')
-    setFeedback('');
-    setSelectedChat('');
+    // Prepare the feedback data
+    const feedbackData = {
+      chatTitle: selectedChat, // Assuming selectedChat contains the title of the selected chat
+      feedback: feedback
+    };
+  
+    // Send a POST request to submit the feedback
+    axios.post('http://localhost:5000/submit-feedback', feedbackData)
+      .then(response => {
+        console.log(response.data.message); // Log the success message
+        alert('Feedback submitted. Thank you!');
+        setFeedback(''); // Clear the feedback input
+        setSelectedChat(''); // Clear the selected chat
+      })
+      .catch(error => {
+        console.error('Error submitting feedback:', error); // Log any errors
+        alert('An error occurred while submitting feedback. Please try again later.');
+      });
   };
 
   return (
@@ -74,8 +100,12 @@ const ChatFeedback = () => {
           <p>SmartLearnAI</p>
         </div>
         <div className="AppHeaderRight">
-          <img src={profile} alt="profile" className="ProfileIcon" />
-          <p className="HiTeacherText">{teacherName}</p>
+
+          <button className="ProfileButton" onClick={handleProfileClick}>
+            <img src={profile} alt="profile" className="ProfileIcon" />
+          </button>
+          <p className="HiStudentText">{teacherName}</p>
+
           <div className="settings-section">
             <img
               src={settings}
@@ -104,7 +134,9 @@ const ChatFeedback = () => {
           <select value={selectedChat} onChange={(e) => setSelectedChat(e.target.value)}>
             <option value="">Select a chat</option>
             {chats.map((chat, index) => (
-              <option key={index} value={chat.chatID}>{chat.title}</option>
+              <option key={index} value={chat.chatID} title={chat.chatLog}>
+                {chat.title}
+              </option>
             ))}
           </select>
         </label>

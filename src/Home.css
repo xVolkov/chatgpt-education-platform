@@ -14,12 +14,10 @@
 
   .RectangleStudent {
     background-color: rgba(177, 227, 255, 0.5);
-    width: 95%;
-    height: 100px;
-    margin: 40px 0 40px 40px; /* 40px top, 0 right, 40px bottom, 40px left */
-    display: flex;
-    align-items: center;
-    justify-content: left; 
+    width: 25%;
+    height: 400px;
+    margin: 60px 20px 20px 20px;
+    display: inline-block;
     text-align: center;
     padding-top: 1px;
     font-family: Arial, sans-serif;
@@ -28,24 +26,26 @@
     font-weight: bold;
   }
 
-  .RectangleStudent p {
-    text-align: left;
-    width: 400px;
-    margin-left: 20px; 
-  }
-
   .RectangleButtonContainer {
     margin-top: 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
   }
-  
+
   .RectangleButtonContainerStudent {
-    margin-top: 10px;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     align-items: center;
+    justify-content: center; /* Added */
+    height: 100%; /* Added */
+  }
+
+  .RectangleButtonContainerStudent button {
+    margin-top: 20px;
+    margin-bottom: 20px; 
+    padding: 15px; 
+    width: 50%; 
   }
   
   .RectangleButton {
@@ -55,20 +55,8 @@
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    width: 60%;
+    width: 50%;
     font-size: 18px;
-  }
-
-  .RectangleButtonStudent {
-    background-color: transparent;
-    color: #003C71;
-    padding: 20px 15px;
-    margin: 5px 40px 10px 10px; 
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 20px;
-    font-weight: bold;
   }
   
   .AppHeader {
@@ -128,6 +116,12 @@
   }
   
   .HiTeacherText {
+    font-size: 16px;
+    font-weight: normal;
+    margin-right: 10px;
+  }
+
+  .HiStudentText {
     font-size: 16px;
     font-weight: normal;
     margin-right: 10px;

@@ -1,0 +1,32 @@
+{
+  "assistantId": "asst_QM4aFsztwDdjBQIhAsxP6EaP",
+  "name": "123-LiveTA",
+  "instructions": "You're an AI teacher assistant, helping university professors and students with their needs.",
+  "tools": [
+    {
+      "type": "retrieval"
+    }
+  ],
+  "model": "gpt-4-1106-preview",
+  "file_ids": [
+    "file-R3p1jYRzblvhLpRBUcNJ9SCn",
+    "file-GHj8llhmfDQo3CFPEkmjzkux",
+    "file-RdZtfsZHtZUINCVj8DcyeEbo",
+    "file-T8iK3dIjakQx5cFnmv9S1j66",
+    "file-4X0LsQl2UXRngSr1EYbpCeMV",
+    "file-fsvV2rzakrXVTRcf5SSEHXpB",
+    "file-7ExoFlL8UmDh814FknOhkBTh",
+    "file-3UO5wf7HkMIDAOjIUVOFYCeA",
+    "file-fZC5EXVoVEWfSPWPjzhydTUL",
+    "file-L5dP37ogeQfIeHRwB64rBTMu",
+    "file-G76EF7f4Y9Yr3JFJJW6o6XX8",
+    "file-4bZIFEvLkLRhoRZKtr8tSJeP",
+    "file-jJEmdc8ZzlFUDfqy3ES9YWzI",
+    "file-vNYuj7ORPp3UK6THH7pyi7af",
+    "file-enRKFh0MIBKnrtiAjj1oHhGo",
+    "file-nSoi0mN5eSTjTXShNcdcw3Ip",
+    "file-39TZ0kstd7bnyhliVF5oXf81",
+    "file-hoR23k2iq9qh9pKWCjIUR3LV",
+    "file-bmd5TuWamihANpwR7yWFpPT1"
+  ]
+}

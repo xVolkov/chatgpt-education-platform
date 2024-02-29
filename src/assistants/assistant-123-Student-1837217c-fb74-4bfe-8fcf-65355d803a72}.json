@@ -1,0 +1,14 @@
+{
+  "assistantId": "asst_ffwimNypF82tAdCGBbVJ2ytC",
+  "name": "123-Student-LiveTA",
+  "instructions": "You're an AI teacher assistant, helping university professors and students with their needs.",
+  "tools": [
+    {
+      "type": "retrieval"
+    }
+  ],
+  "model": "gpt-4-1106-preview",
+  "file_ids": [
+    "file-ik4A5J92DjBXVdDsgymfJxi4"
+  ]
+}

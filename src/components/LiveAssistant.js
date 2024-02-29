@@ -5,6 +5,8 @@ import logo from './assets/logo.png';
 import settings from './assets/settings.png';
 import profile from './assets/profile.png';
 import home from './assets/home.png';
+import upload from './assets/upload.png';
+
 import '../styles.css'; // Import the CSS file
 
 const LiveAssistant = () => {
@@ -13,7 +15,7 @@ const LiveAssistant = () => {
   const [userQuestion, setUserQuestion] = useState('');
   const [response, setResponse] = useState(''); // State to hold the response
   const [ws, setWs] = useState(null);
-  const [chatLog, setChatLog] = useState({});
+  const [chatLog, setChatLog] = useState([]);
 
   const fileInputRef = useRef(null); // Use useRef hook to create a ref for your file input
   const [selectedFile, setSelectedFile] = useState(null);
@@ -26,6 +28,8 @@ const LiveAssistant = () => {
   const [selectedCourseCode, setSelectedCourseCode] = useState(''); // Storing selected course code
   const [selectedCourseCodeTemp, setSelectedCourseCodeTemp] = useState(''); // Temp storing course code (for form handling)
   const [previewSelectedCourse, setPreviewSelectedCourse] = useState('');
+  const [selectedFileName, setSelectedFileName] = useState('');
+
 
   const userType = sessionStorage.getItem('userType');
   const userID = sessionStorage.getItem('userID');
@@ -37,8 +41,10 @@ const LiveAssistant = () => {
 
     websocket.onmessage = (event) => {
       const message = JSON.parse(event.data);
-      setResponse(message.message); // Assuming the server sends back a JSON with a 'message' field
-      logMessages(response)
+      const formattedMessage = `LiveTA: ${message.message}`;
+      setResponse(formattedMessage); // Assuming the server sends back a JSON with a 'message' field
+      logMessages(formattedMessage); // Log the formatted message
+
     };
     return () => {
       websocket.close();
@@ -105,6 +111,18 @@ const LiveAssistant = () => {
       chatForm.style.display = 'none'; // Keep chat form hidden
     }
   }, [selectedCourseCode]); // Dependence on selectedCourseCode
+
+  useEffect(() => {
+    if (ws) {
+      ws.onmessage = (event) => {
+        const message = JSON.parse(event.data);
+        setResponse(message.message);
+        // Add the new response to chat history
+        setChatLog(prevChatLog => [...prevChatLog, message.message]);
+      };
+    }
+  }, [ws]);
+
   
   // ######################### HANDLES COURSE SELECTION CHANGE #########################
   const handleCourseChange = async (event) => {
@@ -157,6 +175,25 @@ const LiveAssistant = () => {
     }
   };
 
+  const saveChatLog = async () => {
+    const title = prompt("Enter a title for your chat log:");
+    if (title !== null) { // Check if user cancelled prompt
+      try {
+        console.log("Chat log to be saved:", chatLog);
+        const response = await axios.post('http://localhost:5000/save-chat-log', {
+          title: title,
+          chatLog: chatLog,
+          userID: sessionStorage.getItem('userID') // Include the logged-in userID
+        });
+        console.log(response.data.message);
+        setChatLog([]);
+      } catch (error) {
+        console.error('Error saving chat log:', error);
+      }
+    }
+  };
+  
+
   // #################### SENDS ALL NEEDED INFO TO SERVER ####################
   const sendInfo = () =>{
     sendSelectedCourseCode();
@@ -164,22 +201,34 @@ const LiveAssistant = () => {
   }
   
   // #################### LOGS MESSAGES ####################
-  const logMessages = (message) =>{
-    setChatLog(message);
-  }
+
+  const logMessages = (message, isAssistantMessage = false) => {
+    const formattedMessage = isAssistantMessage ? `LiveTA: ${message}` : message;
+    setChatLog(prevChatLog => [...prevChatLog, formattedMessage]);
+  };
 
   // #################### Handles Sending a Question ####################
-  const handleAskQuestion = () => {
+const handleAskQuestion = async () => {
+  if (selectedFile) {
+    // If a file is selected, upload the file
+    await handleUpload();
+  }
+
+  if (userQuestion.trim() !== '') { // Check if userQuestion is not empty or just whitespace
     if (ws) {
+      // Send the question after the file upload is complete
       ws.send(JSON.stringify({
         action: "1",
         userQuestion: userQuestion,
-        userFile: "null"
+        userFile: selectedFile ? selectedFile.name : "null" // Use selected file name if available
       }));
+      logMessages(`You: ${userQuestion}`);
+      setUserQuestion('');
+      setSelectedFileName('');
     }
-    logMessages(userQuestion);
-    setUserQuestion('');
-  };
+  }
+};
+
 
   // #################### Handles Uploading Files to Assistant ####################
   const handleUploadToAssistant = (fileName) => {
@@ -193,9 +242,13 @@ const LiveAssistant = () => {
         userFile: fileName
       }));
     }
-    logMessages(userQuestion);
+
+    logMessages(`You: Uploaded file: ${fileName}`); // Log the uploaded file message
     setSelectedFile(null);
     fileInputRef.current.value = '';
+    // Reset selected file name
+    setSelectedFileName('');
+
   };
 
   // #################### HANDLES THE FILE UPLOAD LOGIC ####################
@@ -220,7 +273,10 @@ const LiveAssistant = () => {
   };
 
   const handleFileChange = (event) => {
-    setSelectedFile(event.target.files[0]);
+    const file = event.target.files[0];
+    setSelectedFile(file);
+    setSelectedFileName(file ? file.name : ''); // Update selected file name
+
   };
 
   const handleHomeClick = () => {
@@ -236,6 +292,13 @@ const LiveAssistant = () => {
     sessionStorage.clear(); // Clear the session storage
     alert('Logged-in User ID: ' + sessionStorage.getItem('userID')); // DEBUG - Confirms user signed out
     navigate('/'); // Navigate to the login/register component
+  };
+
+  const handleInputKeyDown = (event) => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      handleAskQuestion(); // Call the function to send the question when Enter is pressed
+    }
   };
 
   // ################################ HTML CODE ##################################
@@ -271,41 +334,52 @@ const LiveAssistant = () => {
         <p>LiveTA - {selectedCourseCodeTemp}</p>
       </header>
 
-        <div className="chat-form" style={{display: 'none'}}>
-          <h2>Ask a Question or Upload File to LiveTA</h2>
-          <div className="chat-form">
-            
-              <textarea readOnly value={response} style={{ width: '90%', height: '300px' }} ></textarea>
-              <div>
-                <input
-                  type='text'
-                  placeholder="Type your question here"
-                  value={userQuestion}
-                  onChange={(e) => setUserQuestion(e.target.value)}
-                  style={{ width: '80%', marginTop:'20px'}}
-                />
-                <button onClick={handleAskQuestion}>Send</button>
+        <div className="LiveAssistantContainer">
+          <div className="chat-form" style={{display: 'none'}}>
+            <h2>Talk to LiveTA</h2>
+            <div className="chat-form">
+              
+            <div className="chat-log-container">
+              <textarea
+                readOnly
+                value={Array.isArray(chatLog) ? chatLog.filter(message => !message.includes('LiveTA is processing your request..')).map(message => message.startsWith('You:') ? message : `LiveTA: ${message}`).join('\n') : chatLog}
+                className="ResponseTextarea"></textarea>
+            </div>
+
+            <div className="input-container">
+              <input
+                type='text'
+                placeholder="Type your question here"
+                value={userQuestion}
+                onChange={(e) => setUserQuestion(e.target.value)}
+                className="InputField"
+                onKeyDown={handleInputKeyDown}
+              />
+              <div className="file-upload-container">
+                <label htmlFor="file-upload" className="file-upload-label">
+                  <img src={upload} alt="Upload File" className="upload-icon" onClick={(event) => { event.preventDefault(); fileInputRef.current.click(); }} />
+                </label>
+                <input type="file" id="file-upload" className="FileInput" onChange={handleFileChange} ref={fileInputRef}/>
               </div>
-            
-            <h2>Select a File to Upload</h2>
-            <div>
-              <input type="file" onChange={handleFileChange} ref={fileInputRef}/>
-              <button onClick={handleUpload}>Upload</button>
+            </div>
+            {selectedFileName && <p className="FileName">Selected file: {selectedFileName}</p>}
+            <button onClick={handleAskQuestion}>Send</button>
+            <button onClick={saveChatLog}>Save Chat Log</button>
             </div>
           </div>
-        </div>
 
-          <div className="upload-files-form">
-            <h1>Select a Course</h1>
-                <label>
-                    <select onChange={handleCourseChange} value={previewSelectedCourse} >
-                        <option value="">Select a course code</option>
-                        {courseCodes.map(code => (
-                        <option key={code} value={code}>{code}</option>
-                        ))}
-                    </select>
-                </label>
-                <button onClick={sendInfo}>Submit</button>
+            <div className="upload-files-form">
+              <h1>Select a Course</h1>
+                  <label>
+                      <select onChange={handleCourseChange} value={previewSelectedCourse} >
+                          <option value="">Select a course code</option>
+                          {courseCodes.map(code => (
+                          <option key={code} value={code}>{code}</option>
+                          ))}
+                      </select>
+                  </label>
+                  <button onClick={sendInfo}>Submit</button>
+            </div>
           </div>
 
   </div>

@@ -82,6 +82,10 @@ function App() {
     navigate('/home-teacher');
   }; 
 
+  const handleProfileClick = () => {
+    navigate('/user-profile');
+  }; 
+
   return (
     <div className="App">
       <header className="AppHeader">
@@ -92,7 +96,9 @@ function App() {
         
         <div className="AppHeaderRight">
           <div className="profile-section">
-            <img src={profile} alt="profile" className="ProfileIcon" />
+            <button className="ProfileButton" onClick={handleProfileClick}>
+              <img src={profile} alt="profile" className="ProfileIcon" />
+            </button>
             <p className="HiTeacherText">{teacherName}</p>
           </div>
           <div className="settings-section">

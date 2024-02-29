@@ -2,14 +2,13 @@ import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-route
 import React, { useState, useEffect } from 'react';
 import '../App.css';  // Import App-specific styles
 import '../Home.css';  // Import the newly created styles file
-import '../styles.css'; // Import the CSS file
 import settings from './assets/settings.png';
 import profile from './assets/profile.png';
 import logo from './assets/logo.png';
 import home from './assets/home.png';
 
 import LiveAssistant from './LiveAssistant';
-import ChatFeedback from './ChatFeedback';
+import ChatFeedbackStudent from './ChatFeedbackStudent';
 import ContactSupport from './ContactSupport';
 
 function Rectangle({ children, buttons }) {
@@ -21,7 +20,7 @@ function Rectangle({ children, buttons }) {
       {children}
       <div className="RectangleButtonContainerStudent">
         {buttons.map((button, index) => (
-          <button key={index} className="RectangleButtonStudent"onClick={() => navigate(button.path)}>
+          <button key={index} className={button.className}onClick={() => navigate(button.path)}>
             {button.text}
             </button>
         ))}
@@ -33,12 +32,16 @@ function Rectangle({ children, buttons }) {
 function App() {
 
   const course = [
-    { text: "LiveTA", path:"/live-assistant", className: "RectangleButton" },
-    { text: "Chat Feedback", path: "/chat-feedback", className: "RectangleButton" }, 
+
+    { text: "LiveTA", path:"/live-assistant", className: "RectangleButtonStudent" },
+    { text: "Add a Course", path: "/add-courses-student", className: "RectangleButtonStudent" },
+    { text: "Chat Feedback", path: "/chat-feedback-student", className: "RectangleButtonStudent" }, 
   ];
 
   const [showDropdown, setShowDropdown] = useState(false); // State to control the dropdown visibility
-  const [teacherName, setTeacherName] = useState('Teacher_Name!'); // State for teacher's name
+  const [studentName, setStudentName] = useState('Student_Name!'); 
+  const [courses, setCourses] = useState([]);
+
   useEffect(() => {
     // Fetch the teacher's name when the component mounts
     const userID = sessionStorage.getItem('userID');
@@ -48,13 +51,25 @@ function App() {
         .then(response => response.json())
         .then(data => {
           if (data.firstName) {
-            setTeacherName(`Hi ${data.firstName}!`);
+            setStudentName(`Hi ${data.firstName}!`);
           }
         })
-        .catch(err => console.error('Error fetching teacher name:', err));
+        .catch(err => console.error('Error fetching student name:', err));
     }
   }, []);
-
+  
+  useEffect(() => {
+    const userID = sessionStorage.getItem('userID');
+    if (userID) {
+      fetch(`http://localhost:5000/get-student-courses/${userID}`)
+        .then(response => response.json())
+        .then(data => {
+          setCourses(data); // Set the courses state with fetched data
+        })
+        .catch(err => console.error('Error fetching courses:', err));
+    }
+  }, []);
+  
   const navigate = useNavigate();
   const handleSignOut = () => {
     sessionStorage.clear(); // Clear the session storage
@@ -66,8 +81,8 @@ function App() {
     navigate('/home-student');
   }; 
 
-  const handleSuppClick = () => {
-    navigate('/contact-support');
+  const handleProfileClick = () => {
+    navigate('/user-profile');
   }; 
 
   return (
@@ -80,8 +95,10 @@ function App() {
 
         <div className="AppHeaderRight">
           <div className="profile-section">
-            <img src={profile} alt="profile" className="ProfileIcon" />
-            <p className="HiTeacherText">{teacherName}</p>
+            <button className="ProfileButton" onClick={handleProfileClick}>
+              <img src={profile} alt="profile" className="ProfileIcon" />
+            </button>
+            <p className="HiStudentText">{studentName}</p>
           </div>
           <div className="settings-section">
             <img
@@ -103,31 +120,22 @@ function App() {
         <button className="HomeButton" onClick={handleHomeClick}>
           <img src={home} alt="home" className="HomeIcon" />
         </button>
-        <p>Add Courses</p>
-        <button className="ContactSupportButton" onClick={handleSuppClick}>
-          Contact Support
-        </button>
       </header>
 
       <Routes>
-          <Route path="/chat-feedback" element={<ChatFeedback />} />
-          <Route path="/live-assistant" element={<LiveAssistant />} />
+
+        <Route path="/live-assistant" element={<LiveAssistant />} />
+        <Route path="/chat-feedback-student" element={<ChatFeedbackStudent />} />
+
       </Routes>
 
-      <Rectangle buttons={course}>
-      <p>Cloud Computing</p>
-      </Rectangle>
-
-      <Rectangle buttons={course}>
-      <p>Modelling and Simulations</p>
-      </Rectangle>
-
-      <Rectangle buttons={course}>
-      <p>Capstone II</p>
-      </Rectangle>
-
-      <Rectangle buttons={course}>
-      <p>Computer & Software Security</p>
+      <Rectangle
+          buttons={[
+            { text: 'Add Course', path: '/add-courses-student' },
+            { text: 'LiveTA', path: '/live-assistant' },
+            { text: 'Chat Feedback', path: '/chat-feedback-student' },
+          ]}
+        >
       </Rectangle>
     </div>
   );

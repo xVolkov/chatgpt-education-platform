@@ -38,6 +38,10 @@ const FAQs = () => {
 
   const handleHomeClick = () => {
     navigate('/home-teacher');
+  };
+  
+  const handleProfileClick = () => {
+    navigate('/user-profile');
   }; 
   
   const handleSignOut = () => {
@@ -54,7 +58,11 @@ const FAQs = () => {
           <p>SmartLearnAI</p>
         </div>
         <div className="AppHeaderRight">
-          <img src={profile} alt="profile" className="ProfileIcon" />
+
+          <button className="ProfileButton" onClick={handleProfileClick}>
+            <img src={profile} alt="profile" className="ProfileIcon" />
+          </button>
+
           <p className="HiTeacherText">{teacherName}</p>
           <div className="settings-section">
             <img

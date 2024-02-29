@@ -21,12 +21,15 @@ import ContactSupport from './components/ContactSupport';
 import FAQs from './components/FAQs';
 import LiveAssistant from './components/LiveAssistant';
 import TrainLiveTA from './components/TrainLiveTA';
+import UserProfile from './components/UserProfile';
 
 // Upload Files to GPT - GptAssistant.js
 //import GptAssistant from './components/GptAssistant';
 
 // Student Home Page:
 import HomeStudent from './components/HomeStudent';
+import AddCoursesStudent from './components/AddCoursesStudent';
+import ChatFeedbackStudent from './components/ChatFeedbackStudent';
 
 const App = () => {
   return (
@@ -41,6 +44,7 @@ const App = () => {
         <Route path="/forgot-password" element={<ForgotPassword/>} />
         <Route path="/home-teacher" element={<HomeTeacher />} />
         <Route path="/add-courses" element={<AddCourses />} />
+        <Route path="/add-courses-student" element={<AddCoursesStudent />} />
         <Route path="/modify-courses" element={<ModifyCourses />} />
         <Route path="/generate-content" element={<GenerateContent />} />
         <Route path="/upload-files" element={<UploadFiles />} />
@@ -50,6 +54,9 @@ const App = () => {
         <Route path="/home-student" element={<HomeStudent />} />
         <Route path="/live-assistant" element={<LiveAssistant />} />
         <Route path="/train-ta" element={<TrainLiveTA />} />
+        <Route path="/user-profile" element={<UserProfile />} />
+        <Route path="/chat-feedback-student" element={<ChatFeedbackStudent />} />
+
         {/* Other routes can be added here */}
       </Routes>
     </Router>
