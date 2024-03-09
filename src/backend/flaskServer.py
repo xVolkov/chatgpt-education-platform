@@ -133,6 +133,11 @@ def add_student_course():
         if not course:
             return jsonify({"message": "Course not found"}), 404
         
+        # Check if the student already has the course
+        existing_course = student_courses_collection.find_one({"studentID": student_id, "courseCode": course_code})
+        if existing_course:
+            return jsonify({"message": "Student already has this course"}), 400
+        
         # Fetch course details including the course name
         course_name = course.get('courseName')
         
