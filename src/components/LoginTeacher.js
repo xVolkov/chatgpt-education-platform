@@ -45,7 +45,7 @@ const LoginTeacher = () => {
             setServerResponse(server_userData.message);
             sessionStorage.setItem('userType', userType); // Stores in session storage the type of user
             sessionStorage.setItem('userID', server_userData.userID); // Storing userID for logged in user
-            alert('Logged-in User ID: ' + sessionStorage.getItem('userID')); // #### DEBUG ####: PRINTS USER ID OF LOGGED-IN USER
+            //alert('Logged-in User ID: ' + sessionStorage.getItem('userID')); // #### DEBUG ####: PRINTS USER ID OF LOGGED-IN USER
             navigate('/home-teacher'); // Redirect user to RegisterConfirmation page
           } else {
             // Handle HTTP errors

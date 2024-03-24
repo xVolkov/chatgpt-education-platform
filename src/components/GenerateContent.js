@@ -30,7 +30,7 @@ const GenerateContent = () => {
 
   const handleSignOut = () => {
     sessionStorage.clear(); // Clear the session storage
-    alert('Logged-in User ID: ' + sessionStorage.getItem('userID'));
+    //alert('Logged-in User ID: ' + sessionStorage.getItem('userID'));
     navigate('/'); // Navigate to the login/register component
   };
 

@@ -80,7 +80,7 @@ const UploadFiles = () => {
 
     const userID = sessionStorage.getItem('userID');
     if (!userID) {
-      alert('User is not logged in');
+      alert('Please logout and login again before continuing');
       return;
     }
 
@@ -133,7 +133,7 @@ const UploadFiles = () => {
 
   const handleSignOut = () => {
     sessionStorage.clear(); // Clear the session storage
-    alert('Logged-in User ID: ' + sessionStorage.getItem('userID')); // DEBUG - Confirms user signed out
+    //alert('Logged-in User ID: ' + sessionStorage.getItem('userID')); // DEBUG - Confirms user signed out
     navigate('/'); // Navigate to the login/register component
   };
 

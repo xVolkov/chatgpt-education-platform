@@ -52,7 +52,7 @@ const AddCourses = () => {
 
   const handleSignOut = () => {
     sessionStorage.clear(); // Clear the session storage
-    alert('Logged-in User ID: ' + sessionStorage.getItem('userID'));
+    //alert('Logged-in User ID: ' + sessionStorage.getItem('userID'));
     navigate('/'); // Navigate to the login/register component
   };
 
@@ -91,9 +91,9 @@ const AddCourses = () => {
     event.preventDefault();
 
     const teacherID = sessionStorage.getItem('userID');
-    alert('Logged-in User ID: ' + sessionStorage.getItem('userID'));
+    //alert('Logged-in User ID: ' + sessionStorage.getItem('userID'));
     if (!teacherID) {
-      alert('No user ID found in session storage');
+      alert('Please logout and login again before continuing');
       return;
     }
 

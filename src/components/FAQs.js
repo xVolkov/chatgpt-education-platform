@@ -46,7 +46,7 @@ const FAQs = () => {
   
   const handleSignOut = () => {
     sessionStorage.clear(); 
-    alert('Logged-in User ID: ' + sessionStorage.getItem('userID'));
+    //alert('Logged-in User ID: ' + sessionStorage.getItem('userID'));
     navigate('/'); 
   };
 

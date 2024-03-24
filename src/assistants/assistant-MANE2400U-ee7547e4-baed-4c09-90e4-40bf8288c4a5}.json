@@ -1,0 +1,15 @@
+{
+  "assistantId": "asst_VqP2rdQMUZLohd5u1imdi6MM",
+  "name": "MANE2400U-LiveTA",
+  "instructions": "You're an AI teacher assistant, helping university professors and students with their needs.",
+  "tools": [
+    {
+      "type": "retrieval"
+    }
+  ],
+  "model": "gpt-4-1106-preview",
+  "file_ids": [
+    "file-QfvkEtwRuASBWqWxRrLtZOzw",
+    "file-yuBePVEg1WD2nd1rKY69EiHh"
+  ]
+}

@@ -41,9 +41,9 @@ const TrainLiveTA = () => {
     websocket.onmessage = (event) => {
       const message = JSON.parse(event.data);
       if (message.message == "LiveTA is typing.."){
-        alert("LiveTA is reading the file..")
+        //alert("LiveTA is reading the file..")
       } else {
-        alert(message.message);
+        //alert(message.message);
       }
     };
     return () => {
@@ -108,7 +108,7 @@ const TrainLiveTA = () => {
 
   const handleSignOut = () => {
     sessionStorage.clear(); // Clear the session storage
-    alert('Logged-in User ID: ' + sessionStorage.getItem('userID')); // DEBUG - Confirms user signed out
+    //alert('Logged-in User ID: ' + sessionStorage.getItem('userID')); // DEBUG - Confirms user signed out
     navigate('/'); // Navigate to the login/register component
     };
 
@@ -136,6 +136,7 @@ const TrainLiveTA = () => {
 
     const handleUpload = async (fileToUpload, givenFileName) => {
         const formData = new FormData();
+        //alert("LiveTA is reading your files..")
             formData.append('file', fileToUpload); // Adjust based on your file structure
             try {
                 const response = await fetch('http://localhost:3002/upload-file', {
