@@ -71,31 +71,21 @@ const LiveAssistant = () => {
   // ######################### FETCHES COURSES RELATED TO LOGGED-IN USER #########################
   useEffect(() => { 
     const fetchCourseCodes = async () => {
-      if (userType === 'Teacher'){
-        const teacherID = sessionStorage.getItem('userID');
-        try {
-          const response = await fetch(`http://localhost:5000/get-course-codes?teacherID=${teacherID}`);
-          if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-          }
-          const data = await response.json();
-          setCourseCodes(data.courseCodes);
-        } catch (error) {
-          console.error('Error fetching course codes:', error);
+      try {
+        const userType = sessionStorage.getItem('userType');
+        const userID = sessionStorage.getItem('userID');
+        let url = `http://localhost:5000/get-course-codes?userID=${userID}&userType=${userType}`;
+        const response = await fetch(url);
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
         }
-      } else {
-        try {
-          const response = await fetch(`http://localhost:5000/get-all-course-codes`);
-          if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-          }
-          const data = await response.json();
-          setCourseCodes(data.courseCodes);
-        } catch (error) {
-          console.error('Error fetching course codes:', error);
-        }
+        const data = await response.json();
+        setCourseCodes(data.courseCodes);
+      } catch (error) {
+        console.error('Error fetching course codes:', error);
       }
-    };
+    };    
+    
     fetchCourseCodes();
   }, []);
 

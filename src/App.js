@@ -14,7 +14,6 @@ import RegistrationConfirmation from './components/RegisterConfirmation';
 import HomeTeacher from './components/HomeTeacher';
 import AddCourses from './components/AddCourses';
 import ModifyCourses from './components/ModifyCourses';
-import GenerateContent from './components/GenerateContent';
 import UploadFiles from './components/UploadFiles';
 import ChatFeedback from './components/ChatFeedback';
 import ContactSupport from './components/ContactSupport';
@@ -46,7 +45,6 @@ const App = () => {
         <Route path="/add-courses" element={<AddCourses />} />
         <Route path="/add-courses-student" element={<AddCoursesStudent />} />
         <Route path="/modify-courses" element={<ModifyCourses />} />
-        <Route path="/generate-content" element={<GenerateContent />} />
         <Route path="/upload-files" element={<UploadFiles />} />
         <Route path="/chat-feedback" element={<ChatFeedback />} />
         <Route path="/contact-support" element={<ContactSupport />} />

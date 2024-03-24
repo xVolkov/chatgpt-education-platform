@@ -133,6 +133,11 @@ def add_student_course():
         if not course:
             return jsonify({"message": "Course not found"}), 404
         
+        # Check if the student already has the course
+        existing_course = student_courses_collection.find_one({"studentID": student_id, "courseCode": course_code})
+        if existing_course:
+            return jsonify({"message": "Student already has this course"}), 400
+        
         # Fetch course details including the course name
         course_name = course.get('courseName')
         
@@ -177,11 +182,18 @@ def save_chat_log():
 
 @app.route('/get-course-codes', methods=['GET'])
 def get_course_codes():
-    teacher_id = request.args.get('teacherID')
-    if not teacher_id:
-        return jsonify({"message": "Teacher ID not provided"}), 400
-    courses = courses_collection.find({"teacherID": teacher_id}, {"courseCode": 1})
-    course_codes = [course['courseCode'] for course in courses]
+    user_id = request.args.get('userID')
+    user_type = request.args.get('userType')
+    
+    if user_type == 'Teacher':
+        teacher_courses = courses_collection.find({"teacherID": user_id}, {"courseCode": 1})
+        course_codes = [course['courseCode'] for course in teacher_courses]
+    elif user_type == 'Student':
+        student_courses = student_courses_collection.find({"studentID": user_id}, {"courseCode": 1})
+        course_codes = [course['courseCode'] for course in student_courses]
+    else:
+        return jsonify({"message": "Invalid user type"}), 400
+
     return jsonify({"courseCodes": course_codes}), 200
 
 @app.route('/get-all-course-codes', methods=['GET'])

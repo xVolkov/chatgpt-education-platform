@@ -40,8 +40,9 @@ const UploadFiles = () => {
   useEffect(() => {
     const fetchCourseCodes = async () => {
       const teacherID = sessionStorage.getItem('userID');
+      const userType = sessionStorage.getItem('userType'); // Assuming userType is stored in sessionStorage
       try {
-        const response = await fetch(`http://localhost:5000/get-course-codes?teacherID=${teacherID}`);
+        const response = await fetch(`http://localhost:5000/get-course-codes?userID=${teacherID}&userType=${userType}`);
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
@@ -51,9 +52,7 @@ const UploadFiles = () => {
         console.error('Error fetching course codes:', error);
       }
     };
-
     fetchCourseCodes();
-    
   }, []);
 
   const handleCourseChange = async (event) => {
