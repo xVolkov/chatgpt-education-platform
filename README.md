@@ -1,5 +1,5 @@
-# SmartLearnAI - ChatGPT Assistants Powered Educational Platform #
-SmartLearnAI is an innovative educational platform enhanced with ChatGPT Assistants, designed to revolutionize learning experiences. At its core, a Python Flask backend manages the MongoDB database, handling all educational platform operations, while a separate JavaScript backend interacts with the OpenAI API to manage the ChatGPT Assistants.
+# EduGPT-Assist: AI-Powered Educational Platform
+EduGPT is an innovative educational platform enhanced with ChatGPT Assistants, designed to revolutionize learning experiences. At its core, a Python Flask backend manages the MongoDB database, handling all educational platform operations, while a separate JavaScript backend interacts with the OpenAI API to manage the ChatGPT Assistants.
 
 ## How to Run the Application Locally ##
 To set up and run SmartLearnAI on your local machine, follow these steps:
