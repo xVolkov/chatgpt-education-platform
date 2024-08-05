@@ -1,5 +1,5 @@
-# EduGPT-Assist: AI-Powered Educational Platform
-EduGPT-Assist revolutionizes education with ChatGPT assistants. The platform includes interactive lessons, personalized tutoring, and intelligent Q&A. A Python Flask backend manages user data and platform operations in a MongoDB database, while a JavaScript backend interfaces with the OpenAI API for real-time assistant interactions. The platform supports multimedia content uploads, customizable learning paths, and real-time performance analytics, enhancing the learning experience for students and educators alike.
+# AI-Powered Educational Platform
+The platform revolutionizes education by using OpenAI Assistants feature. The web application includes interactive lessons, personalized tutoring, and intelligent Q&A. A Python Flask backend manages user data and platform operations in a MongoDB database, while a JavaScript backend interfaces with the OpenAI API for real-time assistant interactions. The platform supports multimedia content uploads, customizable learning paths, and real-time performance analytics, enhancing the learning experience for students and educators alike.
 
 ## How to Run the Application Locally ##
 To set up and run SmartLearnAI on your local machine, follow these steps:
